@@ -1,0 +1,21 @@
+:root{
+--font-serif:"Source Serif 4",Georgia,serif;
+--font-sans:"Source Sans 3",-apple-system,Segoe UI,sans-serif;
+--fs-wordmark:clamp(28px,4vw,40px);
+--fs-display:clamp(32px,4vw,56px);
+--fs-h1:36px;
+--fs-h2:28px;
+--fs-h3:22px;
+--fs-body-lg:18px;
+--fs-body:16px;
+--fs-small:14px;
+--fs-caption:12px;
+--lh-tight:1.15;
+--lh-heading:1.25;
+--lh-body:1.6;
+--ls-eyebrow:0.14em;
+--fw-regular:400;
+--fw-medium:500;
+--fw-semibold:600;
+--fw-bold:700;
+}
