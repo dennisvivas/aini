@@ -1,0 +1,22 @@
+:root{
+--ini-black:#171717;
+--ini-bone:#F7F2E9;
+--ini-sand:#C9B79C;
+--ini-white:#FFFFFF;
+--ini-terracotta:#C1440E;
+--ini-gold:#D9A441;
+--ini-amber-dark:#8A4B0C;
+--ini-mono-ink:#111111;
+--text-primary:var(--ini-black);
+--text-on-dark:var(--ini-white);
+--text-muted:color-mix(in oklch, var(--ini-black) 65%, var(--ini-sand));
+--surface-page:var(--ini-bone);
+--surface-card:var(--ini-white);
+--surface-inverse:var(--ini-black);
+--border-subtle:color-mix(in oklch, var(--ini-black) 14%, var(--ini-bone));
+--border-strong:var(--ini-black);
+--accent-cta:var(--ini-terracotta);
+--accent-cta-hover:var(--ini-amber-dark);
+--accent-highlight:var(--ini-gold);
+--focus-ring:var(--ini-terracotta);
+}
