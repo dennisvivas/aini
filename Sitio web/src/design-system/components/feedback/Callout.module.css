@@ -1,0 +1,13 @@
+.callout {
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  border: 1px solid transparent;
+}
+
+.info { background: var(--ini-bone); border-color: var(--ini-sand); }
+.notice { background: #FBEFE3; border-color: var(--ini-gold); }
+
+.title { font-weight: var(--fw-semibold); margin-bottom: 6px; font-size: var(--fs-body); }
+.body { font-size: var(--fs-body); line-height: var(--lh-body); color: var(--text-muted); }
