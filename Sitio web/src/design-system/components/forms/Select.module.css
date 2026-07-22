@@ -1,0 +1,19 @@
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-sans);
+  width: 100%;
+}
+.labelText { font-size: var(--fs-small); font-weight: var(--fw-medium); color: var(--text-primary); }
+
+.select {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-subtle);
+  background: var(--ini-white);
+  color: var(--text-primary);
+}
+.select:disabled { background: var(--ini-bone); }

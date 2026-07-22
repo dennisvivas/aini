@@ -1,0 +1,57 @@
+.flyer {
+  width: 480px;
+  background: var(--ini-bone);
+  font-family: var(--font-sans);
+  border: 1px solid var(--ini-sand);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--ini-black);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.logo { width: 40px; height: 40px; }
+.wordmark { font-family: var(--font-serif); font-weight: 700; font-size: 22px; color: var(--ini-white); line-height: 1; }
+.subtitle { font-size: 11px; color: var(--ini-bone); margin-top: 4px; }
+
+.body { padding: 40px 32px; flex: 1; display: flex; flex-direction: column; gap: 18px; }
+
+.eyebrow {
+  display: inline-block;
+  align-self: flex-start;
+  white-space: nowrap;
+  background: var(--ini-terracotta);
+  color: var(--ini-white);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 2px;
+}
+
+.title { margin: 0; font-family: var(--font-serif); font-size: 30px; line-height: 1.2; color: var(--ini-black); }
+
+.details { display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: var(--ini-black); }
+
+.footer {
+  background: var(--ini-white);
+  border-top: 1px solid var(--ini-sand);
+  padding: 20px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.link { font-size: 14px; color: var(--ini-black); }
+.cta {
+  background: var(--ini-black);
+  color: var(--ini-white);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 2px;
+}

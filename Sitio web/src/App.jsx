@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import isotipo from "./design-system/assets/isotipo-sol-de-nodos.svg";
 import { Button, Input, Select, Checkbox, Radio, Switch, Badge, Tag, Callout, Card } from "./design-system";
 import { InstitutionalFlyer } from "./design-system/ui_kits/institutional-flyer/InstitutionalFlyer.jsx";
+import styles from "./App.module.css";
 
 const COLORS = [
   { name: "Negro", varName: "--ini-black", hex: "#171717" },
@@ -13,20 +14,30 @@ const COLORS = [
   { name: "Ámbar oscuro", varName: "--ini-amber-dark", hex: "#8A4B0C" },
 ];
 
+const SWATCH_CLASS = {
+  "--ini-black": styles.swatchBlack,
+  "--ini-bone": styles.swatchBone,
+  "--ini-sand": styles.swatchSand,
+  "--ini-white": styles.swatchWhite,
+  "--ini-terracotta": styles.swatchTerracotta,
+  "--ini-gold": styles.swatchGold,
+  "--ini-amber-dark": styles.swatchAmberDark,
+};
+
 function Section({ eyebrow, title, children }) {
   return (
-    <section style={{ marginBottom: "var(--space-9)" }}>
-      <span style={{ display: "block", fontSize: "var(--fs-caption)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-eyebrow)", textTransform: "uppercase", color: "var(--ini-terracotta)", marginBottom: "var(--space-2)" }}>
+    <section className={styles.section}>
+      <span className={styles.sectionEyebrow}>
         {eyebrow}
       </span>
-      <h2 style={{ fontFamily: "var(--font-serif)", fontSize: "var(--fs-h2)", margin: "0 0 var(--space-5) 0", color: "var(--text-primary)" }}>{title}</h2>
+      <h2 className={styles.sectionTitle}>{title}</h2>
       {children}
     </section>
   );
 }
 
-function Row({ children, style }) {
-  return <div style={{ display: "flex", gap: "var(--space-4)", alignItems: "center", flexWrap: "wrap", marginBottom: "var(--space-4)", ...style }}>{children}</div>;
+function Row({ children, className = "" }) {
+  return <div className={`${styles.row} ${className}`}>{children}</div>;
 }
 
 export default function App() {
@@ -35,12 +46,12 @@ export default function App() {
   const [notifications, setNotifications] = useState(true);
 
   return (
-    <div style={{ maxWidth: 960, margin: "0 auto", padding: "var(--space-8) var(--space-5)" }}>
-      <header style={{ display: "flex", alignItems: "center", gap: "var(--space-3)", marginBottom: "var(--space-9)" }}>
+    <div className={styles.page}>
+      <header className={styles.header}>
         <img src={isotipo} alt="Isotipo AINI — sol de nodos" width={48} height={48} />
         <div>
-          <div style={{ fontFamily: "var(--font-serif)", fontWeight: "var(--fw-bold)", fontSize: "var(--fs-wordmark)", lineHeight: 1 }}>AINI</div>
-          <div style={{ fontSize: "var(--fs-small)", color: "var(--text-muted)" }}>
+          <div className={styles.wordmark}>AINI</div>
+          <div className={styles.wordmarkSub}>
             Instituto de Inteligencia Artificial para América Latina y el Caribe
           </div>
         </div>
@@ -49,20 +60,20 @@ export default function App() {
       <Section eyebrow="Fundamentos" title="Color">
         <Row>
           {COLORS.map((c) => (
-            <div key={c.varName} style={{ width: 120 }}>
-              <div style={{ height: 64, borderRadius: "var(--radius-md)", background: c.hex, border: "1px solid var(--border-subtle)" }} />
-              <div style={{ fontSize: "var(--fs-caption)", marginTop: "var(--space-2)", color: "var(--text-primary)" }}>{c.name}</div>
-              <div style={{ fontSize: "var(--fs-caption)", color: "var(--text-muted)" }}>{c.hex}</div>
+            <div key={c.varName} className={styles.swatchWrap}>
+              <div className={`${styles.swatch} ${SWATCH_CLASS[c.varName] || ""}`} />
+              <div className={styles.colorName}>{c.name}</div>
+              <div className={styles.colorHex}>{c.hex}</div>
             </div>
           ))}
         </Row>
       </Section>
 
       <Section eyebrow="Fundamentos" title="Tipografía">
-        <div style={{ fontFamily: "var(--font-serif)", fontSize: "var(--fs-h1)", fontWeight: "var(--fw-bold)", marginBottom: "var(--space-2)" }}>
+        <div className={styles.typeHeading}>
           Source Serif 4 — títulos
         </div>
-        <div style={{ fontFamily: "var(--font-sans)", fontSize: "var(--fs-body)", lineHeight: "var(--lh-body)", color: "var(--text-muted)", maxWidth: 640 }}>
+        <div className={styles.typeBody}>
           Source Sans 3 — copy institucional y componentes de interfaz. AINI es un think tank regional
           que co-crea políticas y estrategia de adopción de IA en América Latina y el Caribe.
         </div>
@@ -76,10 +87,10 @@ export default function App() {
           <Button variant="ghost">Cancelar</Button>
           <Button variant="primary" disabled>Deshabilitado</Button>
         </Row>
-        <Row style={{ maxWidth: 320 }}>
+        <Row className={styles.rowNarrow}>
           <Input label="Nombre de la institución" placeholder="Ministerio de..." />
         </Row>
-        <Row style={{ maxWidth: 320 }}>
+        <Row className={styles.rowNarrow}>
           <Select
             label="Sector"
             options={[
@@ -115,7 +126,7 @@ export default function App() {
       </Section>
 
       <Section eyebrow="Componentes" title="Layout — Card">
-        <div style={{ maxWidth: 420 }}>
+        <div className={styles.cardWrap}>
           <Card
             eyebrow="Política pública"
             title="Marco regulatorio de IA en salud"
