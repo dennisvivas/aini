@@ -106,10 +106,18 @@ function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHo
           {NAV_DISABLED.map((item) => (
             <span key={item} className={styles.mobileMenuDisabled}>{item}</span>
           ))}
-          <span className={styles.mobileMenuDisabled}>AINI Academy (Aprender)</span>
-          <button onClick={onGoEvents} className={styles.mobileMenuButtonItem}>Eventos</button>
-          <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
+
+          <div className={styles.mobileMenuCard}>
+            <span className={styles.dropdownLabel}>Aprender</span>
+            <span className={styles.dropdownItemDisabled}>AINI Academy</span>
+            <div className={styles.dropdownDivider} />
+            <span className={styles.dropdownLabel}>Institución</span>
+            <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
+            <button onClick={onGoEvents} className={styles.dropdownButton}>Eventos</button>
+          </div>
+
           <span className={styles.mobileMenuDisabled}>Noticias</span>
+
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.mobileJoinWrap}>
             <Button variant="primary" size="md">Únete</Button>
           </a>
