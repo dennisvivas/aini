@@ -1,0 +1,20 @@
+:root{
+--space-1:4px;
+--space-2:8px;
+--space-3:12px;
+--space-4:16px;
+--space-5:24px;
+--space-6:32px;
+--space-7:48px;
+--space-8:64px;
+--space-9:96px;
+--radius-sm:2px;
+--radius-md:4px;
+--radius-lg:8px;
+--radius-pill:999px;
+--isotipo-clearspace:0.5em;
+--shadow-card:0 1px 2px rgba(23,23,23,0.06),0 4px 12px rgba(23,23,23,0.08);
+--shadow-none:none;
+--border-width:1px;
+--border-width-strong:1.5px;
+}
