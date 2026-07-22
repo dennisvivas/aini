@@ -80,9 +80,9 @@
 
 .mobileMenu { background: var(--ini-black); border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 4px; }
 .mobileMenuDisabled { padding: 12px 4px; font-size: var(--fs-body); color: rgba(255, 255, 255, 0.35); cursor: default; }
-.mobileMenuButtonItem {
-  text-align: left; background: none; border: none; padding: 12px 4px; font-family: var(--font-sans);
-  font-size: var(--fs-body); font-weight: var(--fw-medium); color: var(--ini-white); cursor: pointer;
+.mobileMenuCard {
+  background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card); padding: 12px; margin: 8px 0; display: flex; flex-direction: column; gap: 4px;
 }
 .mobileJoinWrap { margin-top: 10px; }
 
