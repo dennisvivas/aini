@@ -104,19 +104,32 @@ function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHo
       {isMobileNav && mobileMenuOpen && (
         <div className={styles.mobileMenu}>
           {NAV_DISABLED.map((item) => (
-            <span key={item} className={styles.mobileMenuDisabled}>{item}</span>
+            <span key={item} className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>{item}</span>
           ))}
 
-          <div className={styles.mobileMenuCard}>
-            <span className={styles.dropdownLabel}>Aprender</span>
-            <span className={styles.dropdownItemDisabled}>AINI Academy</span>
-            <div className={styles.dropdownDivider} />
-            <span className={styles.dropdownLabel}>Institución</span>
-            <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
-            <button onClick={onGoEvents} className={styles.dropdownButton}>Eventos</button>
-          </div>
+          <button
+            onClick={onToggleLearnDropdown}
+            aria-expanded={learnDropdownOpen}
+            className={`${styles.mobileMenuRow} ${styles.mobileAccordionTrigger}`}
+          >
+            Aprender
+            <svg
+              className={`${styles.mobileChevron} ${learnDropdownOpen ? styles.mobileChevronOpen : ""}`}
+              width="10" height="6" viewBox="0 0 10 6" fill="none"
+            >
+              <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
 
-          <span className={styles.mobileMenuDisabled}>Noticias</span>
+          {learnDropdownOpen && (
+            <div className={styles.mobileAccordionPanel}>
+              <span className={styles.mobileMenuDisabled}>AINI Academy</span>
+              <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
+              <button onClick={onGoEvents} className={styles.mobileAccordionButton}>Eventos</button>
+            </div>
+          )}
+
+          <span className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>Noticias</span>
 
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.mobileJoinWrap}>
             <Button variant="primary" size="md">Únete</Button>

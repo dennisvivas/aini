@@ -78,13 +78,27 @@
 .hamburgerLine { width: 24px; height: 2px; background: var(--ini-white); display: block; }
 .hamburgerLineShort { width: 16px; height: 2px; background: var(--ini-white); display: block; }
 
-.mobileMenu { background: var(--ini-black); border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 4px; }
-.mobileMenuDisabled { padding: 12px 4px; font-size: var(--fs-body); color: rgba(255, 255, 255, 0.35); cursor: default; }
-.mobileMenuCard {
-  background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md);
-  box-shadow: var(--shadow-card); padding: 12px; margin: 8px 0; display: flex; flex-direction: column; gap: 4px;
+.mobileMenu { background: var(--ini-black); border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 16px 20px 24px; display: flex; flex-direction: column; }
+.mobileMenuRow { padding: 14px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.mobileMenuDisabled { font-size: var(--fs-body); color: rgba(255, 255, 255, 0.35); cursor: default; }
+
+.mobileAccordionTrigger {
+  width: 100%; background: none; border: none; padding: 14px 4px; display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-sans); font-size: var(--fs-body); font-weight: var(--fw-regular); color: var(--ini-white); cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-.mobileJoinWrap { margin-top: 10px; }
+.mobileChevron { transition: transform 0.15s ease; color: var(--ini-white); }
+.mobileChevronOpen { transform: rotate(180deg); }
+
+.mobileAccordionPanel {
+  display: flex; flex-direction: column; padding-left: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mobileAccordionPanel .mobileMenuDisabled { padding: 12px 4px; }
+.mobileAccordionButton {
+  text-align: left; background: none; border: none; padding: 12px 4px; font-family: var(--font-sans);
+  font-size: var(--fs-body); font-weight: var(--fw-medium); color: var(--ini-white); cursor: pointer;
+}
+.mobileJoinWrap { margin-top: 16px; }
 
 /* EventCard */
 .eventCard {
