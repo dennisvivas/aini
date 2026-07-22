@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import isotipo from "../../assets/isotipo-sol-de-nodos.svg";
 import isotipoWhite from "../../assets/isotipo-sol-de-nodos-white.svg";
 import { Button, Card } from "../../index.js";
+import styles from "./AiniHome.module.css";
 
 const WHATSAPP_URL = "https://chat.whatsapp.com/EHKnMXdPdBO7dHNvIYj5Fc";
 
@@ -39,10 +40,7 @@ const STEPS = [
 
 function Eyebrow({ children, tone = "cta" }) {
   return (
-    <span style={{
-      fontSize: "var(--fs-caption)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-eyebrow)",
-      textTransform: "uppercase", color: tone === "cta" ? "var(--ini-terracotta)" : "var(--text-muted)",
-    }}>
+    <span className={`${styles.eyebrow} ${tone === "cta" ? styles.eyebrowCta : styles.eyebrowMuted}`}>
       {children}
     </span>
   );
@@ -50,7 +48,7 @@ function Eyebrow({ children, tone = "cta" }) {
 
 function DisabledText({ children, dark = true }) {
   return (
-    <span style={{ fontSize: "var(--fs-body)", color: dark ? "rgba(255,255,255,0.35)" : "rgba(23,23,23,0.35)", cursor: "default", userSelect: "none" }}>
+    <span className={`${styles.disabledText} ${dark ? styles.disabledTextDark : styles.disabledTextLight}`}>
       {children}
     </span>
   );
@@ -58,65 +56,61 @@ function DisabledText({ children, dark = true }) {
 
 function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHome, onGoEvents, onToggleMobileMenu, onToggleLearnDropdown }) {
   return (
-    <header style={{ position: "sticky", top: 0, zIndex: 40, background: "var(--ini-black)" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 20px", height: 72, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-        <div onClick={onGoHome} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }}>
-          <img src={isotipoWhite} alt="AINI" style={{ width: 30, height: 30, display: "block" }} />
-          <span style={{ fontFamily: "var(--font-serif)", fontWeight: "var(--fw-bold)", fontSize: "var(--fs-h3)", color: "var(--ini-white)", letterSpacing: "0.01em" }}>AINI</span>
+    <header className={styles.header}>
+      <div className={styles.headerInner}>
+        <div onClick={onGoHome} className={styles.brand}>
+          <img src={isotipoWhite} alt="AINI" className={styles.brandLogo} />
+          <span className={styles.brandName}>AINI</span>
         </div>
 
         {!isMobileNav && (
-          <nav style={{ display: "flex", alignItems: "center", gap: 28 }}>
+          <nav className={styles.nav}>
             {NAV_DISABLED.map((item) => <DisabledText key={item}>{item}</DisabledText>)}
 
-            <div style={{ position: "relative" }}>
-              <button onClick={onToggleLearnDropdown} style={{
-                background: "none", border: "none", padding: 0, display: "flex", alignItems: "center", gap: 6,
-                fontFamily: "var(--font-sans)", fontSize: "var(--fs-body)", fontWeight: screen === "learn" ? "var(--fw-bold)" : "var(--fw-regular)",
-                color: "var(--ini-white)", cursor: "pointer",
-              }}>
+            <div className={styles.learnWrap}>
+              <button onClick={onToggleLearnDropdown} className={`${styles.learnButton} ${screen === "learn" ? styles.learnButtonActive : ""}`}>
                 Aprender
                 <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </button>
               {learnDropdownOpen && (
-                <div style={{ position: "absolute", top: 36, left: 0, background: "var(--surface-card)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-card)", padding: 12, minWidth: 200, display: "flex", flexDirection: "column", gap: 4 }}>
-                  <span style={{ padding: "4px 12px", fontSize: "var(--fs-caption)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-eyebrow)", textTransform: "uppercase", color: "var(--text-muted)" }}>Aprender</span>
-                  <span style={{ padding: "10px 12px", fontFamily: "var(--font-sans)", fontSize: "var(--fs-body)", color: "rgba(23,23,23,0.35)", cursor: "default" }}>AINI Academy</span>
-                  <div style={{ height: 1, background: "var(--border-subtle)", margin: "6px 4px" }} />
-                  <span style={{ padding: "4px 12px", fontSize: "var(--fs-caption)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-eyebrow)", textTransform: "uppercase", color: "var(--text-muted)" }}>Institución</span>
-                  <span style={{ padding: "10px 12px", fontFamily: "var(--font-sans)", fontSize: "var(--fs-body)", color: "rgba(23,23,23,0.35)", cursor: "default" }}>Sobre nosotros</span>
-                  <button onClick={onGoEvents} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "10px 12px", borderRadius: "var(--radius-sm)", fontFamily: "var(--font-sans)", fontSize: "var(--fs-body)", fontWeight: "var(--fw-medium)", color: "var(--text-primary)", cursor: "pointer" }}>Events</button>
+                <div className={styles.learnDropdown}>
+                  <span className={styles.dropdownLabel}>Aprender</span>
+                  <span className={styles.dropdownItemDisabled}>AINI Academy</span>
+                  <div className={styles.dropdownDivider} />
+                  <span className={styles.dropdownLabel}>Institución</span>
+                  <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
+                  <button onClick={onGoEvents} className={styles.dropdownButton}>Events</button>
                 </div>
               )}
             </div>
 
             <DisabledText>Noticias</DisabledText>
 
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.joinLink}>
               <Button variant="primary" size="md">Únete</Button>
             </a>
           </nav>
         )}
 
         {isMobileNav && (
-          <button onClick={onToggleMobileMenu} aria-label="Menú" style={{ background: "none", border: "none", padding: 8, cursor: "pointer", display: "flex", flexDirection: "column", gap: 5 }}>
-            <span style={{ width: 24, height: 2, background: "var(--ini-white)", display: "block" }} />
-            <span style={{ width: 24, height: 2, background: "var(--ini-white)", display: "block" }} />
-            <span style={{ width: 16, height: 2, background: "var(--ini-white)", display: "block" }} />
+          <button onClick={onToggleMobileMenu} aria-label="Menú" className={styles.mobileMenuButton}>
+            <span className={styles.hamburgerLine} />
+            <span className={styles.hamburgerLine} />
+            <span className={styles.hamburgerLineShort} />
           </button>
         )}
       </div>
 
       {isMobileNav && mobileMenuOpen && (
-        <div style={{ background: "var(--ini-black)", borderTop: "1px solid rgba(255,255,255,0.12)", padding: "16px 20px 24px", display: "flex", flexDirection: "column", gap: 4 }}>
+        <div className={styles.mobileMenu}>
           {NAV_DISABLED.map((item) => (
-            <span key={item} style={{ padding: "12px 4px", fontSize: "var(--fs-body)", color: "rgba(255,255,255,0.35)", cursor: "default" }}>{item}</span>
+            <span key={item} className={styles.mobileMenuDisabled}>{item}</span>
           ))}
-          <span style={{ padding: "12px 4px", fontSize: "var(--fs-body)", color: "rgba(255,255,255,0.35)", cursor: "default" }}>AINI Academy (Aprender)</span>
-          <button onClick={onGoEvents} style={{ textAlign: "left", background: "none", border: "none", padding: "12px 4px", fontFamily: "var(--font-sans)", fontSize: "var(--fs-body)", fontWeight: "var(--fw-medium)", color: "var(--ini-white)", cursor: "pointer" }}>Eventos</button>
-          <span style={{ padding: "12px 4px", fontSize: "var(--fs-body)", color: "rgba(255,255,255,0.35)", cursor: "default" }}>Sobre nosotros</span>
-          <span style={{ padding: "12px 4px", fontSize: "var(--fs-body)", color: "rgba(255,255,255,0.35)", cursor: "default" }}>Noticias</span>
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" style={{ marginTop: 10 }}>
+          <span className={styles.mobileMenuDisabled}>AINI Academy (Aprender)</span>
+          <button onClick={onGoEvents} className={styles.mobileMenuButtonItem}>Eventos</button>
+          <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
+          <span className={styles.mobileMenuDisabled}>Noticias</span>
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.mobileJoinWrap}>
             <Button variant="primary" size="md">Únete</Button>
           </a>
         </div>
@@ -127,16 +121,11 @@ function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHo
 
 function EventCard({ ev, elevated = false }) {
   return (
-    <div style={{
-      background: elevated ? "var(--ini-white)" : "var(--surface-page)",
-      border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-md)", padding: 24,
-      display: "flex", flexDirection: "column", gap: 14,
-      boxShadow: elevated ? "var(--shadow-card)" : "none",
-    }}>
-      <span style={{ alignSelf: "flex-start", fontSize: "var(--fs-caption)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-eyebrow)", textTransform: "uppercase", padding: "4px 10px", borderRadius: "var(--radius-sm)", background: "var(--ini-black)", color: "var(--ini-white)" }}>{ev.badge}</span>
-      <span style={{ fontSize: "var(--fs-small)", fontWeight: "var(--fw-semibold)", color: "var(--ini-terracotta)" }}>{ev.date}</span>
-      <h3 style={{ margin: 0, fontFamily: "var(--font-serif)", fontSize: "var(--fs-h3)", fontWeight: "var(--fw-semibold)", color: "var(--text-primary)" }}>{ev.title}</h3>
-      <p style={{ margin: 0, fontSize: "var(--fs-body)", lineHeight: "var(--lh-body)", color: "var(--text-muted)", flex: 1 }}>{ev.desc}</p>
+    <div className={`${styles.eventCard} ${elevated ? styles.eventCardElevated : ""}`}>
+      <span className={styles.eventBadge}>{ev.badge}</span>
+      <span className={styles.eventDate}>{ev.date}</span>
+      <h3 className={styles.eventTitle}>{ev.title}</h3>
+      <p className={styles.eventDesc}>{ev.desc}</p>
       <a href={ev.href} target="_blank" rel="noopener noreferrer">
         <Button variant="secondary" size="sm">Inscribirse</Button>
       </a>
@@ -147,17 +136,17 @@ function EventCard({ ev, elevated = false }) {
 function HomeScreen({ onGoEvents }) {
   return (
     <main>
-      <section style={{ position: "relative", overflow: "hidden", padding: "72px 20px 88px", background: "var(--surface-page)" }}>
-        <img src={isotipo} alt="" style={{ position: "absolute", top: -60, right: -60, width: 340, height: 340, opacity: 0.08, pointerEvents: "none" }} />
-        <div style={{ maxWidth: 760, margin: "0 auto", position: "relative", display: "flex", flexDirection: "column", gap: 28 }}>
+      <section className={styles.heroSection}>
+        <img src={isotipo} alt="" className={styles.heroIsotipo} />
+        <div className={styles.heroInner}>
           <Eyebrow>Instituto de IA para América Latina y el Caribe</Eyebrow>
-          <h1 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-bold)", fontSize: "var(--fs-display)", lineHeight: "var(--lh-tight)", color: "var(--text-primary)" }}>
+          <h1 className={styles.heroTitle}>
             La inteligencia artificial de LATAM se construye en conjunto.
           </h1>
-          <p style={{ margin: 0, fontFamily: "var(--font-sans)", fontSize: "var(--fs-body-lg)", lineHeight: "var(--lh-body)", color: "var(--text-muted)", maxWidth: 620 }}>
+          <p className={styles.heroDesc}>
             AINI reúne al sector público, al sector privado, a la academia y a la sociedad civil para co-crear investigación, política y adopción responsable de IA en la región.
           </p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginTop: 8 }}>
+          <div className={styles.heroActions}>
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
               <Button variant="primary" size="lg">Únete a la comunidad</Button>
             </a>
@@ -165,36 +154,36 @@ function HomeScreen({ onGoEvents }) {
         </div>
       </section>
 
-      <section style={{ padding: "80px 20px", background: "var(--ini-white)", borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 40 }}>
-          <div style={{ maxWidth: 680, display: "flex", flexDirection: "column", gap: 16 }}>
+      <section className={styles.actorsSection}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionIntro}>
             <Eyebrow>Sobre AINI</Eyebrow>
-            <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h1)", color: "var(--text-primary)" }}>Un think tank regional con cuatro actores en la misma mesa.</h2>
-            <p style={{ margin: 0, fontSize: "var(--fs-body-lg)", lineHeight: "var(--lh-body)", color: "var(--text-muted)" }}>
+            <h2 className={styles.sectionTitle}>Un think tank regional con cuatro actores en la misma mesa.</h2>
+            <p className={styles.sectionLead}>
               Nuestra misión es co-crear investigación, desarrollo y innovación utilizando modelos de IA de frontera para América Latina y el Caribe, articulando a quienes deciden, invierten, investigan y representan a la ciudadanía.
             </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 20 }}>
+          <div className={styles.actorsGrid}>
             {ACTORS.map((actor) => (
-              <div key={actor.label} style={{ background: "var(--surface-page)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-md)", padding: 24, display: "flex", flexDirection: "column", gap: 8 }}>
-                <span style={{ fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h3)", color: "var(--text-primary)" }}>{actor.label}</span>
-                <span style={{ fontSize: "var(--fs-body)", lineHeight: "var(--lh-body)", color: "var(--text-muted)" }}>{actor.desc}</span>
+              <div key={actor.label} className={styles.actorCard}>
+                <span className={styles.actorLabel}>{actor.label}</span>
+                <span className={styles.actorDesc}>{actor.desc}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section style={{ padding: "80px 20px", background: "var(--surface-page)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 40 }}>
-          <div style={{ maxWidth: 680, display: "flex", flexDirection: "column", gap: 16 }}>
+      <section className={styles.verticalsSection}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionIntro}>
             <Eyebrow>Nuestras verticales</Eyebrow>
-            <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h1)", color: "var(--text-primary)" }}>Tres formas de trabajar con AINI.</h2>
+            <h2 className={styles.sectionTitle}>Tres formas de trabajar con AINI.</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
+          <div className={styles.grid300}>
             {VERTICALS.map((v) => (
               <Card key={v.title} eyebrow={v.eyebrow} title={v.title}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                <div className={styles.verticalBody}>
                   <span>{v.desc}</span>
                   <div>
                     <Button variant="outline" size="sm" disabled>{v.cta}</Button>
@@ -206,23 +195,23 @@ function HomeScreen({ onGoEvents }) {
         </div>
       </section>
 
-      <section style={{ padding: "80px 20px", background: "var(--ini-white)", borderTop: "1px solid var(--border-subtle)", borderBottom: "1px solid var(--border-subtle)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 40 }}>
-          <div style={{ maxWidth: 680, display: "flex", flexDirection: "column", gap: 16 }}>
+      <section className={styles.bandedSection}>
+        <div className={styles.sectionInner}>
+          <div className={styles.sectionIntro}>
             <Eyebrow>Agenda</Eyebrow>
-            <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h1)", color: "var(--text-primary)" }}>Próximos eventos.</h2>
+            <h2 className={styles.sectionTitle}>Próximos eventos.</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
+          <div className={styles.grid300}>
             {EVENTS.map((ev) => <EventCard key={ev.title} ev={ev} />)}
           </div>
         </div>
       </section>
 
-      <section style={{ padding: "88px 20px", background: "var(--ini-black)", textAlign: "center" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
-          <img src={isotipoWhite} alt="" style={{ width: 48, height: 48 }} />
-          <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h1)", color: "var(--ini-white)" }}>Súmate a la comunidad de AINI.</h2>
-          <p style={{ margin: 0, fontSize: "var(--fs-body-lg)", lineHeight: "var(--lh-body)", color: "rgba(255,255,255,0.75)" }}>
+      <section className={styles.ctaSection}>
+        <div className={styles.ctaInner}>
+          <img src={isotipoWhite} alt="" className={styles.ctaLogo} />
+          <h2 className={styles.ctaTitle}>Súmate a la comunidad de AINI.</h2>
+          <p className={styles.ctaDesc}>
             Conversa con founders, funcionarios públicos, académicos y líderes de innovación que están construyendo el futuro de la IA en LATAM.
           </p>
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
@@ -237,17 +226,17 @@ function HomeScreen({ onGoEvents }) {
 function EventsScreen() {
   return (
     <main>
-      <section style={{ padding: "72px 20px 48px", background: "var(--surface-page)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
+      <section className={styles.pageHeroSection}>
+        <div className={styles.pageHeroInner}>
           <Eyebrow tone="muted">Agenda</Eyebrow>
-          <h1 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-bold)", fontSize: "var(--fs-display)", color: "var(--text-primary)" }}>Próximos eventos</h1>
-          <p style={{ margin: 0, fontSize: "var(--fs-body-lg)", lineHeight: "var(--lh-body)", color: "var(--text-muted)", maxWidth: 640 }}>
+          <h1 className={styles.pageTitle}>Próximos eventos</h1>
+          <p className={styles.pageLead}>
             Talleres, paneles y encuentros presenciales de la comunidad AINI en América Latina y el Caribe.
           </p>
         </div>
       </section>
-      <section style={{ padding: "0 20px 88px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
+      <section className={styles.eventsListSection}>
+        <div className={`${styles.grid300} ${styles.grid300Contained}`}>
           {EVENTS.map((ev) => <EventCard key={ev.title} ev={ev} elevated />)}
         </div>
       </section>
@@ -258,27 +247,27 @@ function EventsScreen() {
 function LearnScreen() {
   return (
     <main>
-      <section style={{ padding: "72px 20px 48px", background: "var(--surface-page)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
+      <section className={styles.pageHeroSection}>
+        <div className={styles.pageHeroInner}>
           <Eyebrow tone="muted">Learn</Eyebrow>
-          <h1 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-bold)", fontSize: "var(--fs-display)", color: "var(--text-primary)" }}>AINI Academy</h1>
-          <p style={{ margin: 0, fontSize: "var(--fs-body-lg)", lineHeight: "var(--lh-body)", color: "var(--text-muted)", maxWidth: 640 }}>
+          <h1 className={styles.pageTitle}>AINI Academy</h1>
+          <p className={styles.pageLead}>
             Preparación práctica para certificaciones de IA, como Claude Certified Associate (CCA), pensada para equipos y profesionales de LATAM.
           </p>
         </div>
       </section>
 
-      <section style={{ padding: "0 20px 80px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", background: "var(--ini-sand)", borderRadius: "var(--radius-lg)", padding: 40, display: "grid", gridTemplateColumns: "minmax(220px,1fr) minmax(280px, 2fr)", gap: 32, alignItems: "center" }}>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h1)", color: "var(--ini-black)" }}>Cursos destacados</h2>
-            <p style={{ margin: 0, fontSize: "var(--fs-body)", lineHeight: "var(--lh-body)", color: "rgba(23,23,23,0.75)" }}>Nuevos cursos disponibles en AINI Academy, con certificado al completarlos.</p>
+      <section className={styles.coursesSection}>
+        <div className={styles.coursesPanel}>
+          <div className={styles.coursesPanelIntro}>
+            <h2 className={styles.coursesPanelTitle}>Cursos destacados</h2>
+            <p className={styles.coursesPanelDesc}>Nuevos cursos disponibles en AINI Academy, con certificado al completarlos.</p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
+          <div className={styles.grid220}>
             {COURSES.map((c) => (
-              <div key={c.title} style={{ background: "var(--ini-white)", borderRadius: "var(--radius-md)", padding: 24, display: "flex", flexDirection: "column", gap: 20, minHeight: 160, boxShadow: "var(--shadow-card)" }}>
-                <span style={{ fontSize: "var(--fs-caption)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-eyebrow)", textTransform: "uppercase", color: "var(--text-muted)" }}>{c.tag}</span>
-                <h3 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h3)", color: "var(--text-primary)", flex: 1 }}>{c.title}</h3>
+              <div key={c.title} className={styles.courseCard}>
+                <span className={styles.courseTag}>{c.tag}</span>
+                <h3 className={styles.courseTitle}>{c.title}</h3>
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 14L14 4M14 4H6M14 4V12" stroke="#171717" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </div>
             ))}
@@ -286,21 +275,21 @@ function LearnScreen() {
         </div>
       </section>
 
-      <section style={{ padding: "0 20px 88px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 24 }}>
+      <section className={styles.stepsSection}>
+        <div className={`${styles.grid220} ${styles.grid220Contained}`}>
           {STEPS.map((s) => (
-            <div key={s.n} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <span style={{ fontFamily: "var(--font-serif)", fontWeight: "var(--fw-bold)", fontSize: "var(--fs-h1)", color: "var(--ini-sand)" }}>{s.n}</span>
-              <h3 style={{ margin: 0, fontFamily: "var(--font-sans)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-body-lg)", color: "var(--text-primary)" }}>{s.title}</h3>
-              <p style={{ margin: 0, fontSize: "var(--fs-body)", lineHeight: "var(--lh-body)", color: "var(--text-muted)" }}>{s.desc}</p>
+            <div key={s.n} className={styles.step}>
+              <span className={styles.stepNumber}>{s.n}</span>
+              <h3 className={styles.stepTitle}>{s.title}</h3>
+              <p className={styles.stepDesc}>{s.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section style={{ padding: "72px 20px", background: "var(--ini-white)", borderTop: "1px solid var(--border-subtle)", textAlign: "center" }}>
-        <div style={{ maxWidth: 560, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 20 }}>
-          <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: "var(--fw-semibold)", fontSize: "var(--fs-h2)", color: "var(--text-primary)" }}>¿Quieres inscribirte a AINI Academy?</h2>
+      <section className={styles.learnCtaSection}>
+        <div className={styles.learnCtaInner}>
+          <h2 className={styles.learnCtaTitle}>¿Quieres inscribirte a AINI Academy?</h2>
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
             <Button variant="primary" size="lg">Join us</Button>
           </a>
@@ -320,21 +309,21 @@ function Footer() {
     { title: "Términos y condiciones", disabled: ["Política de privacidad"] },
   ];
   return (
-    <footer style={{ marginTop: "auto", background: "var(--ini-black)", padding: "56px 20px 32px" }}>
-      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 32, paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.14)" }}>
+    <footer className={styles.footer}>
+      <div className={styles.footerGrid}>
         {columns.map((col) => (
-          <div key={col.title} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <span style={{ fontSize: "var(--fs-caption)", fontWeight: "var(--fw-semibold)", letterSpacing: "var(--ls-eyebrow)", textTransform: "uppercase", color: "rgba(255,255,255,0.45)" }}>{col.title}</span>
+          <div key={col.title} className={styles.footerCol}>
+            <span className={styles.footerColTitle}>{col.title}</span>
             {(col.links || []).map((l) => (
-              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" style={{ color: "var(--ini-white)", fontSize: "var(--fs-body)" }}>{l.label}</a>
+              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>{l.label}</a>
             ))}
             {(col.disabled || []).map((label) => (
-              <span key={label} style={{ fontSize: "var(--fs-body)", color: "rgba(255,255,255,0.35)", cursor: "default" }}>{label}</span>
+              <span key={label} className={styles.footerDisabled}>{label}</span>
             ))}
           </div>
         ))}
       </div>
-      <p style={{ maxWidth: 1280, margin: "24px auto 0", fontSize: "var(--fs-caption)", color: "rgba(255,255,255,0.4)" }}>© 2026 AINI — Instituto de Inteligencia Artificial para América Latina y el Caribe.</p>
+      <p className={styles.footerCopy}>© 2026 AINI — Instituto de Inteligencia Artificial para América Latina y el Caribe.</p>
     </footer>
   );
 }
@@ -364,7 +353,7 @@ export function AiniHome() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--surface-page)", fontFamily: "var(--font-sans)", color: "var(--text-primary)", display: "flex", flexDirection: "column" }}>
+    <div className={styles.page}>
       <Header
         screen={screen}
         isMobileNav={isMobileNav}

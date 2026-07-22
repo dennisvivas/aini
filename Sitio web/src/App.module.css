@@ -1,0 +1,32 @@
+.page { max-width: 960px; margin: 0 auto; padding: var(--space-8) var(--space-5); }
+
+.header { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-9); }
+.wordmark { font-family: var(--font-serif); font-weight: var(--fw-bold); font-size: var(--fs-wordmark); line-height: 1; }
+.wordmarkSub { font-size: var(--fs-small); color: var(--text-muted); }
+
+.section { margin-bottom: var(--space-9); }
+.sectionEyebrow {
+  display: block; font-size: var(--fs-caption); font-weight: var(--fw-semibold); letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase; color: var(--ini-terracotta); margin-bottom: var(--space-2);
+}
+.sectionTitle { font-family: var(--font-serif); font-size: var(--fs-h2); margin: 0 0 var(--space-5) 0; color: var(--text-primary); }
+
+.row { display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap; margin-bottom: var(--space-4); }
+.rowNarrow { max-width: 320px; }
+
+.swatchWrap { width: 120px; }
+.swatch { height: 64px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
+.swatchBlack { background: var(--ini-black); }
+.swatchBone { background: var(--ini-bone); }
+.swatchSand { background: var(--ini-sand); }
+.swatchWhite { background: var(--ini-white); }
+.swatchTerracotta { background: var(--ini-terracotta); }
+.swatchGold { background: var(--ini-gold); }
+.swatchAmberDark { background: var(--ini-amber-dark); }
+.colorName { font-size: var(--fs-caption); margin-top: var(--space-2); color: var(--text-primary); }
+.colorHex { font-size: var(--fs-caption); color: var(--text-muted); }
+
+.typeHeading { font-family: var(--font-serif); font-size: var(--fs-h1); font-weight: var(--fw-bold); margin-bottom: var(--space-2); }
+.typeBody { font-family: var(--font-sans); font-size: var(--fs-body); line-height: var(--lh-body); color: var(--text-muted); max-width: 640px; }
+
+.cardWrap { max-width: 420px; }
