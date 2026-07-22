@@ -33,6 +33,6 @@ Reglas del proyecto para mantener esa postura:
 - Las tipografías se autohospedan con `@fontsource/*` — no reintroducir `@import` a `fonts.googleapis.com` u otro CDN de fuentes, rompe `font-src 'self'`.
 - No usar el atributo `style={{}}` de React — el CSP corre con `style-src 'self'` sin `'unsafe-inline'`. Usar CSS Modules (`Componente.module.css`) siguiendo el patrón ya presente en cada carpeta de `components/` y `ui_kits/`.
 - Todo cambio va por PR contra `main` (protegida — requiere CI en verde + 1 aprobación, sin push directo).
-- CI (`.github/workflows/ci.yml`) corre `npm run build` y `npm audit --audit-level=high` en cada PR.
+- CI (`.github/workflows/ci.yml`) corre `npm run build` y `npm audit --omit=dev --audit-level=high` en cada PR (solo dependencias de producción — las de build/dev, como Vite, las cubre Dependabot en vez de bloquear el PR).
 - Antes de mergear cualquier PR, correr `code-review` sobre el diff; si el cambio toca cabeceras, dependencias, o agrega backend/formularios, correr también `security-review`.
 - Dependabot (`.github/dependabot.yml`) abre PRs semanales para `npm` y `github-actions` — revisar antes de auto-mergear cualquier bump mayor.
