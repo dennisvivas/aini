@@ -23,7 +23,7 @@ const VERTICALS = [
 
 const EVENTS = [
   { badge: "Taller virtual", date: "Mié 22 jul · 7:00 pm (GMT-5)", title: "MCP en acción: conecta tu base de datos a Claude", desc: "Clase de prueba en vivo: construye un servidor MCP sobre datos reales y conéctalo a Claude.", href: "https://luma.com/v5xo1bts" },
-  { badge: "Panel virtual", date: "22 jul · 7:00 pm CR · 9:00 pm CL", title: "El Gran Debate de la IA", desc: "Cuatro expertos internacionales debaten el presente y el futuro de la IA en América Latina.", href: "https://luma.com/ts5mgwoq" },
+  { badge: "Panel virtual", date: "22 jul · 7:00 pm CR · 9:00 pm CL", title: "El Gran Debate de la IA", desc: "Cuatro expertos internacionales debaten el presente y el futuro de la IA en América Latina.", href: "https://youtu.be/6Elnm0-kxF0", cta: "Ver video" },
   { badge: "Presencial · Lima", date: "Vie 24 jul · 7:00 pm", title: "Parrilla de lanzamiento AINI — Perú", desc: "Encuentro presencial en Miraflores para dar inicio a la comunidad de AINI en Perú.", href: "https://luma.com/nt2m8r1m" },
 ];
 
@@ -148,7 +148,7 @@ function EventCard({ ev, elevated = false }) {
       <h3 className={styles.eventTitle}>{ev.title}</h3>
       <p className={styles.eventDesc}>{ev.desc}</p>
       <a href={ev.href} target="_blank" rel="noopener noreferrer">
-        <Button variant="secondary" size="sm">Inscribirse</Button>
+        <Button variant="secondary" size="sm">{ev.cta ?? "Inscribirse"}</Button>
       </a>
     </div>
   );
@@ -220,7 +220,7 @@ function HomeScreen({ onGoEvents }) {
         <div className={styles.sectionInner}>
           <div className={styles.sectionIntro}>
             <Eyebrow>Agenda</Eyebrow>
-            <h2 className={styles.sectionTitle}>Próximos eventos.</h2>
+            <h2 className={styles.sectionTitle}>Nuestros eventos.</h2>
           </div>
           <div className={styles.grid300}>
             {EVENTS.map((ev) => <EventCard key={ev.title} ev={ev} />)}
@@ -250,7 +250,7 @@ function EventsScreen() {
       <section className={styles.pageHeroSection}>
         <div className={styles.pageHeroInner}>
           <Eyebrow tone="muted">Agenda</Eyebrow>
-          <h1 className={styles.pageTitle}>Próximos eventos</h1>
+          <h1 className={styles.pageTitle}>Nuestros eventos</h1>
           <p className={styles.pageLead}>
             Talleres, paneles y encuentros presenciales de la comunidad AINI en América Latina y el Caribe.
           </p>
