@@ -479,6 +479,15 @@
 
 .personaCargoAmplio { margin-bottom: var(--space-4); }
 
+/* Sitio del perfil: es un dato, no un enlace. Sin terracota ni flecha ↗,
+   que en esta página significan «esto te saca de aquí». */
+.sitioTexto {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
 /* ── 03 método ─────────────────────────────────────────────────────── */
 
 .diagramaMovil { display: none; }

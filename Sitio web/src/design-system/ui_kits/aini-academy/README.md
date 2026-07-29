@@ -31,6 +31,10 @@ Entrada de la página: `academia/index.html` + `src/academia.jsx`. Los tokens
 - El **precio de la membresía** (USD 299/año) solo puede aparecer dentro del FAQ:
   coincide con el precio del bootcamp y fuera de ahí se confunde con él.
 - Las tarjetas **no tienen hover**. Solo el CTA y los enlaces de texto.
+- Los sitios de «Para quién es» (`juztina.ai`, `getnexor.ai`, `thesheriff.cl`)
+  van **como texto, no como enlace** — decisión del cliente. La landing tiene
+  una sola conversión y esas tarjetas no deben sacar a nadie de la página.
+  El mockup los traía enlazados; no volver a enlazarlos por «fidelidad».
 - El contador **no anima dígitos** y va con `aria-live="off"`.
 
 ## Pendientes heredados del handoff

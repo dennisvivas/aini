@@ -73,10 +73,12 @@ const INSTRUCTORES = [
   },
 ];
 
+// Los sitios van como texto, no como enlace: la landing tiene una sola
+// conversión y estas tarjetas no deben sacar a nadie de la página.
 const PERFILES = [
-  { nombre: "Manuel de la Colina", cargo: "CEO, Juztina", sitio: "juztina.ai", href: "https://www.juztina.ai/pe/es" },
-  { nombre: "Ian Lee", cargo: "CEO, Nexor", sitio: "getnexor.ai", href: "https://www.getnexor.ai/es" },
-  { nombre: "Vicente Cruz", cargo: "CEO, Sheriff", sitio: "thesheriff.cl", href: "https://thesheriff.cl/" },
+  { nombre: "Manuel de la Colina", cargo: "CEO, Juztina", sitio: "juztina.ai" },
+  { nombre: "Ian Lee", cargo: "CEO, Nexor", sitio: "getnexor.ai" },
+  { nombre: "Vicente Cruz", cargo: "CEO, Sheriff", sitio: "thesheriff.cl" },
 ];
 
 const INCLUSIONES = [
@@ -474,9 +476,7 @@ function ParaQuien() {
             <Revelar key={p.nombre} indice={i + 2} className={styles.tarjetaElevada}>
               <p className={styles.personaNombre}>{p.nombre}</p>
               <p className={`${styles.personaCargo} ${styles.personaCargoAmplio}`}>{p.cargo}</p>
-              <EnlaceExterno href={p.href} className={styles.enlaceFuerte}>
-                {p.sitio}
-              </EnlaceExterno>
+              <p className={styles.sitioTexto}>{p.sitio}</p>
             </Revelar>
           ))}
         </div>
