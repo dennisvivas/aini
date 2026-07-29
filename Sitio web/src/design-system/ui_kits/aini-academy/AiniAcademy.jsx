@@ -74,7 +74,7 @@ const INSTRUCTORES = [
 ];
 
 const PERFILES = [
-  { nombre: "Manuel de la Colina", cargo: "CEO, Justina", sitio: "juztina.ai", href: "https://www.juztina.ai/pe/es" },
+  { nombre: "Manuel de la Colina", cargo: "CEO, Juztina", sitio: "juztina.ai", href: "https://www.juztina.ai/pe/es" },
   { nombre: "Ian Lee", cargo: "CEO, Nexor", sitio: "getnexor.ai", href: "https://www.getnexor.ai/es" },
   { nombre: "Vicente Cruz", cargo: "CEO, Sheriff", sitio: "thesheriff.cl", href: "https://thesheriff.cl/" },
 ];

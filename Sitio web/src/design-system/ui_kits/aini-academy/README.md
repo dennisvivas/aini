@@ -44,12 +44,16 @@ Entrada de la página: `academia/index.html` + `src/academia.jsx`. Los tokens
    a toda la región.
 4. **Datos estructurados** `schema.org/Course` — sin implementar, a la espera de
    que el cliente confirme que quiere aparecer en resultados de cursos.
-5. **«Justina» vs `juztina.ai`** — el nombre va con *s* y el dominio con *z*, tal
-   como llegó. Falta confirmar cuál es el correcto.
-6. **«Para quién es»** — el párrafo describe el resultado, no la audiencia.
-7. **Lista de espera** — el secundario «Unirme a la lista de espera» está
+5. **«Para quién es»** — el párrafo describe el resultado, no la audiencia.
+6. **Lista de espera** — el secundario «Unirme a la lista de espera» está
    especificado pero no existe: falta el destino concreto en HubSpot.
-8. **Diagrama móvil** — `metodo-aini-movil.svg` llegó sin los identificadores de
+7. **Diagrama móvil** — `metodo-aini-movil.svg` llegó sin los identificadores de
    la secuencia, así que se muestra completo, sin revelado por pasos.
-9. **Isotipo** — se usa la construcción geométrica del design system, no el
+8. **Isotipo** — se usa la construcción geométrica del design system, no el
    vectorial oficial de la agencia.
+
+## Resuelto
+
+- **«Juztina» se escribe con *z***, igual que el dominio `juztina.ai`. La
+  discrepancia del handoff (nombre con *s*, dominio con *z*) queda cerrada:
+  ambos van con *z*.
