@@ -6,6 +6,11 @@ import styles from "./AiniHome.module.css";
 
 const WHATSAPP_URL = "https://chat.whatsapp.com/EHKnMXdPdBO7dHNvIYj5Fc";
 
+// Con barra final: es la forma que resuelve tanto en el servidor de
+// desarrollo como en Vercel. En producción, `trailingSlash: false` la
+// normaliza a /academia, que es la URL canónica.
+const ACADEMY_URL = "/academia/";
+
 const NAV_DISABLED = ["Investigación", "Política", "Compromisos"];
 
 const ACTORS = [
@@ -75,7 +80,7 @@ function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHo
               {learnDropdownOpen && (
                 <div className={styles.learnDropdown}>
                   <span className={styles.dropdownLabel}>Aprender</span>
-                  <span className={styles.dropdownItemDisabled}>AINI Academy</span>
+                  <a href={ACADEMY_URL} className={styles.dropdownButton}>AINI Academy</a>
                   <div className={styles.dropdownDivider} />
                   <span className={styles.dropdownLabel}>Institución</span>
                   <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
@@ -123,7 +128,7 @@ function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHo
 
           {learnDropdownOpen && (
             <div className={styles.mobileAccordionPanel}>
-              <span className={styles.mobileMenuDisabled}>AINI Academy</span>
+              <a href={ACADEMY_URL} className={styles.mobileAccordionButton}>AINI Academy</a>
               <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
               <button onClick={onGoEvents} className={styles.mobileAccordionButton}>Eventos</button>
             </div>
