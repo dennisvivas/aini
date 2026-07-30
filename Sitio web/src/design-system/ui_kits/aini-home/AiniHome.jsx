@@ -52,7 +52,7 @@ function EventCard({ ev, elevated = false }) {
       <h3 className={styles.eventTitle}>{ev.title}</h3>
       <p className={styles.eventDesc}>{ev.desc}</p>
       <a href={ev.href} target="_blank" rel="noopener noreferrer">
-        <Button variant="secondary" size="sm">{ev.cta ?? "Inscribirse"}</Button>
+        <Button variant="outline" size="sm">{ev.cta ?? "Inscribirse"}</Button>
       </a>
     </div>
   );

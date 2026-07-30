@@ -38,7 +38,9 @@
 .secondary:hover:not(:disabled) { background: #2c2c2c; }
 
 .outline { background: transparent; color: var(--ini-black); border: 1.5px solid var(--ini-black); }
-.outline:hover:not(:disabled) { background: var(--ini-bone); }
+/* Velo translúcido en vez de hueso sólido: el hover se ve sobre cualquier
+   fondo, incluidas las tarjetas que ya son hueso. */
+.outline:hover:not(:disabled) { background: color-mix(in srgb, var(--ini-black) 6%, transparent); }
 
 .ghost { background: transparent; color: var(--ini-black); border: 1px solid transparent; }
 .ghost:hover:not(:disabled) { background: var(--ini-bone); }
