@@ -1,0 +1,103 @@
+/* Diagrama del Método AINI — SVG inline (no <img>: la secuencia necesita
+   acceso a cada parte). Tipografía y color salen de los tokens del DS. */
+
+.diagrama {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-sans);
+}
+
+.desktop {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.movil {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.eb {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-eyebrow);
+  fill: var(--text-muted);
+}
+
+.n {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: 16px;
+  fill: var(--text-primary);
+}
+
+.t {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  fill: var(--text-primary);
+}
+
+.s {
+  font-size: var(--fs-caption);
+  fill: var(--text-muted);
+}
+
+/* ── secuencia de revelado ─────────────────────────────────────────────
+   Solo opacity y stroke-dashoffset: ninguna fuerza reflow. */
+
+@keyframes aiRevelar {
+  from { opacity: 0; transform: translateY(var(--shift-step)); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes aiDibujar {
+  from { stroke-dashoffset: 231; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.desktop [data-paso] { opacity: 0; }
+
+.desktop [data-arco] {
+  stroke-dasharray: 231;
+  stroke-dashoffset: 231;
+}
+
+.desktop.isIn [data-paso] {
+  animation: aiRevelar var(--dur-step) var(--ease-standard) both;
+  animation-delay: var(--d, 0ms);
+}
+
+.desktop.isIn [data-arco] {
+  animation: aiDibujar var(--dur-step) var(--ease-standard) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Timeline fija de la especificación: cierra en 1560 ms. */
+.d0    { --d: 0ms; }
+.d240  { --d: 240ms; }
+.d340  { --d: 340ms; }
+.d480  { --d: 480ms; }
+.d580  { --d: 580ms; }
+.d700  { --d: 700ms; }
+.d800  { --d: 800ms; }
+.d900  { --d: 900ms; }
+.d1000 { --d: 1000ms; }
+.d1160 { --d: 1160ms; }
+.d1240 { --d: 1240ms; }
+
+/* La supresión tiene que igualar la especificidad de `.desktop.isIn […]`
+   (0,3,0): si no, la regla animada gana y el diagrama se revela igual. */
+@media (prefers-reduced-motion: reduce) {
+  .desktop [data-paso],
+  .desktop.isIn [data-paso] {
+    opacity: 1;
+    animation: none;
+  }
+  .desktop [data-arco],
+  .desktop.isIn [data-arco] {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}

@@ -68,8 +68,9 @@
 .dropdownItemDisabled { padding: 10px 12px; font-family: var(--font-sans); font-size: var(--fs-body); color: rgba(23, 23, 23, 0.35); cursor: default; }
 .dropdownDivider { height: 1px; background: var(--border-subtle); margin: 6px 4px; }
 .dropdownButton {
-  width: 100%; text-align: left; background: none; border: none; padding: 10px 12px; border-radius: var(--radius-sm);
+  display: block; width: 100%; text-align: left; background: none; border: none; padding: 10px 12px; border-radius: var(--radius-sm);
   font-family: var(--font-sans); font-size: var(--fs-body); font-weight: var(--fw-medium); color: var(--text-primary); cursor: pointer;
+  text-decoration: none;
 }
 
 .joinLink { text-decoration: none; }
@@ -95,8 +96,9 @@
 }
 .mobileAccordionPanel .mobileMenuDisabled { padding: 12px 4px; }
 .mobileAccordionButton {
-  text-align: left; background: none; border: none; padding: 12px 4px; font-family: var(--font-sans);
+  display: block; text-align: left; background: none; border: none; padding: 12px 4px; font-family: var(--font-sans);
   font-size: var(--fs-body); font-weight: var(--fw-medium); color: var(--ini-white); cursor: pointer;
+  text-decoration: none;
 }
 .mobileJoinWrap { margin-top: 16px; }
 

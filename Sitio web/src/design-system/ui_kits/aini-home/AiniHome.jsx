@@ -6,6 +6,11 @@ import styles from "./AiniHome.module.css";
 
 const WHATSAPP_URL = "https://chat.whatsapp.com/EHKnMXdPdBO7dHNvIYj5Fc";
 
+// Con barra final: es la forma que resuelve tanto en el servidor de
+// desarrollo como en Vercel. En producción, `trailingSlash: false` la
+// normaliza a /academia, que es la URL canónica.
+const ACADEMY_URL = "/academia/";
+
 const NAV_DISABLED = ["Investigación", "Política", "Compromisos"];
 
 const ACTORS = [
@@ -16,7 +21,7 @@ const ACTORS = [
 ];
 
 const VERTICALS = [
-  { eyebrow: "Educación", title: "AINI Academy", desc: "Preparación para certificaciones de IA, con casos prácticos a necesidades de la región. Lanzamiento primer curso: 15 de agosto.", cta: "Postular" },
+  { eyebrow: "Educación", title: "AINI Academy", desc: "Preparación para certificaciones de IA, con casos prácticos a necesidades de la región. Lanzamiento primer curso: 15 de agosto.", cta: "Postular", href: ACADEMY_URL },
   { eyebrow: "Consultoría", title: "AINI Consulting", desc: "Consultoría e implementación de IA para organizaciones públicas y privadas, desde la estratégica hasta la implantación.", cta: "Despegar" },
   { eyebrow: "Inversión", title: "AINI Venture", desc: "Inversión y aceleración de fundadores IA. Mentorías e incorporación de nuestra red de agentes IA en tu organización.", cta: "Escalar" },
 ];
@@ -75,7 +80,7 @@ function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHo
               {learnDropdownOpen && (
                 <div className={styles.learnDropdown}>
                   <span className={styles.dropdownLabel}>Aprender</span>
-                  <span className={styles.dropdownItemDisabled}>AINI Academy</span>
+                  <a href={ACADEMY_URL} className={styles.dropdownButton}>AINI Academy</a>
                   <div className={styles.dropdownDivider} />
                   <span className={styles.dropdownLabel}>Institución</span>
                   <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
@@ -123,7 +128,7 @@ function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHo
 
           {learnDropdownOpen && (
             <div className={styles.mobileAccordionPanel}>
-              <span className={styles.mobileMenuDisabled}>AINI Academy</span>
+              <a href={ACADEMY_URL} className={styles.mobileAccordionButton}>AINI Academy</a>
               <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
               <button onClick={onGoEvents} className={styles.mobileAccordionButton}>Eventos</button>
             </div>
@@ -207,7 +212,13 @@ function HomeScreen({ onGoEvents }) {
                 <div className={styles.verticalBody}>
                   <span>{v.desc}</span>
                   <div>
-                    <Button variant="outline" size="sm" disabled>{v.cta}</Button>
+                    {v.href ? (
+                      <a href={v.href} className={styles.joinLink}>
+                        <Button variant="outline" size="sm">{v.cta}</Button>
+                      </a>
+                    ) : (
+                      <Button variant="outline" size="sm" disabled>{v.cta}</Button>
+                    )}
                   </div>
                 </div>
               </Card>

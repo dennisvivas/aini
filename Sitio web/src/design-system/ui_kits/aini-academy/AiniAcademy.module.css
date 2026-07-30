@@ -1,0 +1,937 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   AINI Academy — landing de la cohorte 01.
+   Ritmo de bandas (no se altera):
+   nav hueso → 01 negro → 02 hueso → 03 blanco → 04 hueso → 05 blanco
+   → 06 hueso → 07 negro → 08 hueso → footer negro.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.pagina {
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.banda {
+  padding-block: var(--space-9);
+  padding-inline: clamp(var(--space-4), 8.33vw, 120px);
+  /* La nav es sticky: los anclajes no deben quedar debajo de ella. */
+  scroll-margin-top: 80px;
+}
+
+.bandaHueso { background: var(--surface-page); }
+.bandaBlanca { background: var(--surface-card); }
+
+.bandaNegra {
+  background: var(--surface-inverse);
+  color: var(--text-on-dark);
+}
+
+.interior {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+/* Contenido que existe para lectores de pantalla pero no se pinta. */
+.soloLectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── tipografía compartida ─────────────────────────────────────────── */
+
+.h1 {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-5);
+  max-width: 640px;
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-6);
+}
+
+.h2Ancho {
+  max-width: 900px;
+  margin-bottom: var(--space-3);
+}
+
+.lead {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-6);
+}
+
+/* Cuando el h2 lleva bajada, el aire va debajo de la bajada, no del título. */
+.h2ConLead { margin-bottom: var(--space-2); }
+
+/* El diagrama del Método respira más que el resto de bloques. */
+.leadAmplio { margin-bottom: var(--space-7); }
+
+.nota {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin: var(--space-5) 0 0;
+}
+
+.eyebrowArena,
+.eyebrowAtenuado {
+  display: block;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-eyebrow);
+}
+
+.eyebrowArena {
+  color: var(--ini-sand);
+  margin-bottom: var(--space-5);
+}
+
+.eyebrowAtenuado {
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+/* ── enlaces de texto ──────────────────────────────────────────────── */
+
+.enlace {
+  color: var(--accent-cta);
+  font-size: var(--fs-small);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--dur-fast) var(--ease-ui),
+              text-decoration-color var(--dur-fast) var(--ease-ui);
+}
+
+.enlace:hover { color: var(--accent-cta-hover); }
+
+.enlace:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+  transition: none;
+}
+
+.enlaceFuerte {
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+}
+
+.enlaceExt {
+  display: inline-block;
+  white-space: pre;
+  transition: transform var(--dur-fast) var(--ease-ui);
+}
+
+.enlace:hover .enlaceExt { transform: translateX(var(--shift-ext)); }
+
+/* ── CTA primario ──────────────────────────────────────────────────────
+   La clase se duplica para ganarle en especificidad a las utilidades de
+   tamaño del Button del design system, sin depender del orden del bundle. */
+
+.cta.cta {
+  font-size: var(--fs-body);
+  transition: background-color var(--dur-fast) var(--ease-ui),
+              border-color var(--dur-fast) var(--ease-ui);
+}
+
+/* El CTA a ancho completo es una instrucción de 390px: en desktop las
+   tarjetas conservan el botón de ancho automático del mockup. */
+
+/* Cupos agotados: botón inerte en arena. Hoy no se activa nunca —
+   `CUPOS_RESTANTES` es fijo — pero queda listo para engancharse a HubSpot. */
+.ctaAgotado.ctaAgotado {
+  background: var(--ini-sand);
+  border-color: var(--ini-sand);
+  color: var(--text-primary);
+  cursor: not-allowed;
+  opacity: 1;
+  transition: none;
+}
+
+.ctaRotulo {
+  transition: opacity var(--dur-swap) linear;
+}
+
+.ctaRotuloOculto { opacity: 0; }
+
+.ctaFlecha {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-ui);
+}
+
+.cta:hover .ctaFlecha { transform: translateX(var(--shift-arrow)); }
+
+.cta[aria-busy="true"] { pointer-events: none; }
+
+/* ── entrada de secciones ──────────────────────────────────────────── */
+
+.revelar {
+  opacity: 0;
+  transform: translateY(var(--shift-reveal));
+  transition: opacity var(--dur-reveal) var(--ease-standard),
+              transform var(--dur-reveal) var(--ease-standard);
+  transition-delay: var(--d, 0ms);
+}
+
+.dentro {
+  opacity: 1;
+  transform: none;
+}
+
+.s0 { --d: 0ms; }
+.s1 { --d: 60ms; }
+.s2 { --d: 120ms; }
+.s3 { --d: 180ms; }
+.s4 { --d: 240ms; }
+.s5 { --d: 300ms; }
+.s6 { --d: 360ms; }
+.s7 { --d: 420ms; }
+.s8 { --d: 480ms; }
+
+/* ── nav ───────────────────────────────────────────────────────────── */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--surface-page);
+  border-bottom: var(--border-width) solid transparent;
+  transition: border-color var(--dur-fast) var(--ease-ui);
+  /* Mismo canal lateral que las bandas: el contenido queda alineado. */
+  padding-inline: clamp(var(--space-4), 8.33vw, 120px);
+}
+
+.navFijo { border-bottom-color: var(--ini-sand); }
+
+.navInterior {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-block: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: color var(--dur-fast) var(--ease-ui);
+}
+
+.marca:hover { color: var(--accent-cta); }
+
+.marca:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.marcaNombre {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-heading);
+  white-space: nowrap;
+}
+
+.navEnlaces {
+  display: flex;
+  gap: var(--space-5);
+  font-size: var(--fs-small);
+}
+
+.navEnlace {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-ui);
+}
+
+.navEnlace:hover { color: var(--accent-cta); }
+
+.navEnlace:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.navDerecha {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.navFecha {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.hamburguesa {
+  display: none;
+  margin-left: auto;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 20px;
+  padding: var(--space-2) 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburguesaLinea {
+  height: var(--border-width-strong);
+  background: var(--text-primary);
+}
+
+.hamburguesa:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.menuMovil {
+  display: none;
+  flex-direction: column;
+  padding: var(--space-2) var(--space-4) var(--space-4);
+  border-top: var(--border-width) solid var(--ini-sand);
+}
+
+.menuMovilEnlace {
+  padding: var(--space-3) 0;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: var(--fs-body);
+}
+
+.menuMovilEnlace:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+/* ── 01 hero ───────────────────────────────────────────────────────── */
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1fr 456px;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.heroLead {
+  font-size: var(--fs-body-lg);
+  margin: 0 0 var(--space-6);
+  max-width: 520px;
+  color: var(--ini-bone);
+}
+
+.heroAcciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.heroEnlace {
+  color: var(--text-on-dark);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--dur-fast) var(--ease-ui);
+}
+
+.heroEnlace:hover { color: var(--ini-sand); }
+
+.heroEnlace:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+  transition: none;
+}
+
+/* Marca el punto en el que el CTA del hero sale de viewport: es lo que
+   dispara la barra fija del móvil. Sin él habría que observar un elemento
+   que en móvil no se pinta. */
+.centinela {
+  height: 1px;
+  margin-top: -1px;
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.fichaCelda {
+  border: var(--border-width) solid var(--ini-sand);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.fichaEtiqueta {
+  display: block;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--ini-sand);
+  margin-bottom: var(--space-2);
+}
+
+.fichaValor {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-heading);
+}
+
+.fichaNota {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-body);
+  color: var(--ini-sand);
+}
+
+/* ── 02 qué vas a construir · 05 instructores · 06 para quién es ──── */
+
+.dosColumnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.tresColumnas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+/* Las tarjetas no tienen hover: el único elemento con hover es el CTA y
+   los enlaces de texto. */
+.tarjetaElevada {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+
+.tarjetaTitulo {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-3);
+}
+
+.tarjetaInstructor {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--ini-sand);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.retrato {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+}
+
+.retratoCindy { object-position: center 20%; }
+.retratoJemil { object-position: center 15%; }
+
+.personaNombre {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-1);
+}
+
+.personaCargo {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-3);
+}
+
+.personaCargoAmplio { margin-bottom: var(--space-4); }
+
+/* Sitio del perfil: es un dato, no un enlace. Sin terracota ni flecha ↗,
+   que en esta página significan «esto te saca de aquí». */
+.sitioTexto {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── 03 método ─────────────────────────────────────────────────────── */
+
+.diagramaMovil { display: none; }
+
+/* ── 04 currículum ─────────────────────────────────────────────────── */
+
+.tabla {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-height: 64px;
+  padding-inline: var(--space-5);
+  border-bottom: var(--border-width) solid var(--ini-sand);
+}
+
+.fila:last-child { border-bottom: none; }
+
+.filaSemana {
+  flex: none;
+  width: 96px;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--text-muted);
+}
+
+.filaTema { flex: 1; }
+
+.filaEntrega {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+}
+
+/* El dorado solo existe aquí, como cuadrado de 8px: nunca como color de
+   texto (1.9:1 sobre hueso). */
+.marcaEntrega {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  background: var(--accent-highlight);
+}
+
+.filaSesiones {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+/* ── 07 precio ─────────────────────────────────────────────────────── */
+
+.precioGrid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+/* 56px fijos: `--fs-display` está reservado al h1. */
+.cifra {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: 56px;
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-2);
+}
+
+.precioNota {
+  margin: 0;
+  color: var(--ini-bone);
+}
+
+.inclusiones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3) var(--space-6);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.inclusion {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.check {
+  flex: none;
+  margin-top: 5px;
+}
+
+.garantia {
+  font-size: var(--fs-small);
+  margin: var(--space-4) 0 var(--space-2);
+  color: var(--ini-bone);
+}
+
+.notaPago {
+  font-size: var(--fs-caption);
+  margin: 0;
+  color: var(--ini-sand);
+}
+
+/* ── 08 FAQ + cierre ───────────────────────────────────────────────── */
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: 1fr 456px;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.faqColumna { min-width: 0; }
+
+.faqLista { border-top: var(--border-width) solid var(--ini-sand); }
+
+.faqItem {
+  border-bottom: var(--border-width) solid var(--ini-sand);
+  padding-block: 20px;
+}
+
+.faqBoton {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-heading);
+  color: var(--text-primary);
+  transition: color var(--dur-fast) var(--ease-ui);
+}
+
+.faqBoton:hover { color: var(--accent-cta); }
+
+.faqBoton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+  transition: none;
+}
+
+.faqSigno {
+  flex: none;
+  display: inline-block;
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-h3);
+  line-height: 1;
+  color: var(--accent-cta);
+  transition: transform var(--dur-accordion) var(--ease-standard);
+}
+
+/* + → × */
+.faqBoton[aria-expanded="true"] .faqSigno { transform: rotate(45deg); }
+
+/* Única excepción a «solo transform y opacity»: la altura del panel se
+   resuelve con grid-template-rows, que anima sin empujar el layout.
+   La visibilidad se retira al terminar la transición para que el panel
+   cerrado no sea alcanzable por teclado ni por lector de pantalla. */
+.faqPanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows var(--dur-accordion) var(--ease-standard),
+              visibility 0s linear var(--dur-accordion);
+}
+
+.faqPanel > div { overflow: hidden; }
+
+.faqPanelAbierto {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows var(--dur-accordion) var(--ease-standard),
+              visibility 0s;
+}
+
+.faqRespuesta {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  margin: var(--space-4) 0 0;
+  max-width: 640px;
+}
+
+.tarjetaCierre {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--ini-sand);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+
+.h2Cierre {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-1);
+}
+
+.cierreNota {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-5);
+}
+
+.contador {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.contadorCelda {
+  border: var(--border-width) solid var(--ini-sand);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  text-align: center;
+}
+
+/* Sin animación de dígitos: el reemplazo cada segundo no debe mover nada. */
+.contadorCifra {
+  display: block;
+  min-width: 2ch;
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.contadorEtiqueta {
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--text-muted);
+}
+
+.cupos { margin: 0 0 var(--space-5); }
+
+.cuposCifra { font-weight: var(--fw-semibold); }
+
+/* ── footer ────────────────────────────────────────────────────────── */
+
+.footer {
+  background: var(--surface-inverse);
+  padding-block: var(--space-6);
+  padding-inline: clamp(var(--space-4), 8.33vw, 120px);
+}
+
+.footerInterior {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: var(--fs-small);
+  color: var(--ini-sand);
+}
+
+/* ── barra de CTA fija (solo móvil) ────────────────────────────────── */
+
+.barra {
+  display: none;
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 6;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-page);
+  border-top: var(--border-width) solid var(--ini-sand);
+  transform: translateY(100%);
+  transition: transform var(--dur-base) var(--ease-standard);
+}
+
+.barraVisible { transform: none; }
+
+/* ═══ tablet ═══════════════════════════════════════════════════════ */
+
+@media (max-width: 1023px) {
+  .banda { padding-block: var(--space-8); }
+
+  .heroGrid,
+  .precioGrid,
+  .faqGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+
+  .h2 { font-size: var(--fs-h2); }
+}
+
+@media (max-width: 899px) {
+  .navFecha { display: none; }
+}
+
+/* ═══ móvil ════════════════════════════════════════════════════════ */
+
+@media (max-width: 719px) {
+  .banda {
+    padding-block: var(--space-7);
+    padding-inline: var(--space-4);
+  }
+
+  .nav { padding-inline: var(--space-4); }
+
+  .navInterior { gap: var(--space-4); }
+
+  .menuMovil { padding-inline: 0; }
+
+  .navEnlaces,
+  .navDerecha { display: none; }
+
+  .hamburguesa { display: flex; }
+
+  .menuMovil { display: flex; }
+  .menuMovil[hidden] { display: none; }
+
+  .marcaNombre { font-size: var(--fs-body); }
+
+  /* El CTA del hero sale del flujo: pasa a la barra fija al pie. */
+  .heroAcciones { display: none; }
+
+  .h2,
+  .h2Cierre,
+  .tarjetaTitulo { font-size: var(--fs-h3); }
+
+  .lead { font-size: var(--fs-small); }
+
+  .ficha { grid-template-columns: 1fr 1fr; }
+
+  .soloDesktop { display: none; }
+
+  .fichaValor { font-size: var(--fs-body); }
+
+  .dosColumnas,
+  .tresColumnas,
+  .inclusiones { grid-template-columns: 1fr; }
+
+  .tarjetaElevada,
+  .tarjetaInstructor,
+  .tarjetaCierre { padding: 20px; }
+
+  .tarjetaInstructor {
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .retrato {
+    width: 72px;
+    height: 72px;
+  }
+
+  .diagramaDesktop { display: none; }
+  .diagramaMovil { display: block; }
+
+  /* Cada fila pasa a bloque de dos líneas: «SEMANA n · 2 SESIONES»
+     arriba, el tema debajo, y la marca de entrega en una tercera línea. */
+  .fila {
+    display: block;
+    min-height: 0;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .filaSemana {
+    display: block;
+    width: auto;
+    margin-bottom: var(--space-1);
+  }
+
+  .filaSemana::after { content: " · 2 SESIONES"; }
+
+  /* El «· 2 SESIONES» de arriba es contenido generado, que los lectores de
+     pantalla no exponen de forma fiable. El dato real sigue en el DOM. */
+  .filaSesiones {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .filaTema { font-size: var(--fs-small); }
+
+  .filaEntrega { margin-top: var(--space-1); }
+
+  .contador { grid-template-columns: 1fr 1fr; }
+
+  .contadorCifra { font-size: var(--fs-h3); }
+
+  /* La tarjeta del contador va antes del FAQ. */
+  .faqGrid { gap: var(--space-6); }
+  .cierreColumna { order: -1; }
+
+  .footer { padding-inline: var(--space-4); }
+
+  /* La barra fija es la última capa: sin este colchón tapa el footer y no
+     hay scroll que lo descubra. */
+  .pagina { padding-bottom: 88px; }
+
+  .ctaAncho.ctaAncho { width: 100%; }
+
+  .footerInterior {
+    flex-wrap: wrap;
+    row-gap: var(--space-2);
+  }
+
+  .barra { display: block; }
+}
+
+/* ═══ movimiento reducido ══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Neutralizador de la especificación de movimiento, acotado a la landing:
+     sin él quedan animando el acordeón, el signo del FAQ, el borde del nav,
+     el crossfade del CTA y los enlaces. */
+  .pagina :global(*),
+  .pagina :global(*::before),
+  .pagina :global(*::after) {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  .revelar {
+    opacity: 1;
+    transform: none;
+  }
+
+  .barra { transform: none; }
+}

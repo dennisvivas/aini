@@ -12,13 +12,16 @@ export function Button(props) {
     children,
     onClick,
     type = "button",
+    className = "",
+    ...rest
   } = props;
   return (
     <button
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`${styles.btn} ${SIZE_CLASS[size] || styles.md} ${VARIANT_CLASS[variant] || styles.primary}`}
+      className={`${styles.btn} ${SIZE_CLASS[size] || styles.md} ${VARIANT_CLASS[variant] || styles.primary} ${className}`.trim()}
+      {...rest}
     >
       {children}
     </button>

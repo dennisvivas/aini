@@ -1,0 +1,15 @@
+:root{
+--dur-fast:140ms;
+--dur-base:200ms;
+--dur-accordion:220ms;
+--dur-reveal:320ms;
+--dur-step:320ms;
+--dur-swap:120ms;
+--ease-ui:cubic-bezier(0.4,0,0.2,1);
+--ease-standard:cubic-bezier(0.2,0,0,1);
+--stagger:60ms;
+--shift-reveal:12px;
+--shift-step:8px;
+--shift-arrow:4px;
+--shift-ext:2px;
+}
