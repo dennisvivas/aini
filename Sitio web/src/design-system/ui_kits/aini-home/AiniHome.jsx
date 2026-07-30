@@ -21,7 +21,7 @@ const ACTORS = [
 ];
 
 const VERTICALS = [
-  { eyebrow: "Educación", title: "AINI Academy", desc: "Preparación para certificaciones de IA, con casos prácticos a necesidades de la región. Lanzamiento primer curso: 15 de agosto.", cta: "Postular" },
+  { eyebrow: "Educación", title: "AINI Academy", desc: "Preparación para certificaciones de IA, con casos prácticos a necesidades de la región. Lanzamiento primer curso: 15 de agosto.", cta: "Postular", href: ACADEMY_URL },
   { eyebrow: "Consultoría", title: "AINI Consulting", desc: "Consultoría e implementación de IA para organizaciones públicas y privadas, desde la estratégica hasta la implantación.", cta: "Despegar" },
   { eyebrow: "Inversión", title: "AINI Venture", desc: "Inversión y aceleración de fundadores IA. Mentorías e incorporación de nuestra red de agentes IA en tu organización.", cta: "Escalar" },
 ];
@@ -212,7 +212,13 @@ function HomeScreen({ onGoEvents }) {
                 <div className={styles.verticalBody}>
                   <span>{v.desc}</span>
                   <div>
-                    <Button variant="outline" size="sm" disabled>{v.cta}</Button>
+                    {v.href ? (
+                      <a href={v.href} className={styles.joinLink}>
+                        <Button variant="outline" size="sm">{v.cta}</Button>
+                      </a>
+                    ) : (
+                      <Button variant="outline" size="sm" disabled>{v.cta}</Button>
+                    )}
                   </div>
                 </div>
               </Card>
