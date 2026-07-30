@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import isotipo from "../../assets/isotipo-sol-de-nodos.svg";
 import isotipoWhite from "../../assets/isotipo-sol-de-nodos-white.svg";
 import { Button, Card } from "../../index.js";
+import { SiteHeader, ACADEMY_URL, WHATSAPP_URL } from "../../components/layout/SiteHeader.jsx";
+import { SiteFooter } from "../../components/layout/SiteFooter.jsx";
 import styles from "./AiniHome.module.css";
-
-const WHATSAPP_URL = "https://chat.whatsapp.com/EHKnMXdPdBO7dHNvIYj5Fc";
-
-// Con barra final: es la forma que resuelve tanto en el servidor de
-// desarrollo como en Vercel. En producción, `trailingSlash: false` la
-// normaliza a /academia, que es la URL canónica.
-const ACADEMY_URL = "/academia/";
-
-const NAV_DISABLED = ["Investigación", "Política", "Compromisos"];
 
 const ACTORS = [
   { label: "Sector público", desc: "Ministerios e instituciones de gobierno que definen la política pública de IA." },
@@ -51,100 +44,6 @@ function Eyebrow({ children, tone = "cta" }) {
   );
 }
 
-function DisabledText({ children, dark = true }) {
-  return (
-    <span className={`${styles.disabledText} ${dark ? styles.disabledTextDark : styles.disabledTextLight}`}>
-      {children}
-    </span>
-  );
-}
-
-function Header({ screen, isMobileNav, mobileMenuOpen, learnDropdownOpen, onGoHome, onGoEvents, onToggleMobileMenu, onToggleLearnDropdown }) {
-  return (
-    <header className={styles.header}>
-      <div className={styles.headerInner}>
-        <div onClick={onGoHome} className={styles.brand}>
-          <img src={isotipoWhite} alt="AINI" className={styles.brandLogo} />
-          <span className={styles.brandName}>AINI</span>
-        </div>
-
-        {!isMobileNav && (
-          <nav className={styles.nav}>
-            {NAV_DISABLED.map((item) => <DisabledText key={item}>{item}</DisabledText>)}
-
-            <div className={styles.learnWrap}>
-              <button onClick={onToggleLearnDropdown} className={`${styles.learnButton} ${screen === "learn" ? styles.learnButtonActive : ""}`}>
-                Aprender
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              </button>
-              {learnDropdownOpen && (
-                <div className={styles.learnDropdown}>
-                  <span className={styles.dropdownLabel}>Aprender</span>
-                  <a href={ACADEMY_URL} className={styles.dropdownButton}>AINI Academy</a>
-                  <div className={styles.dropdownDivider} />
-                  <span className={styles.dropdownLabel}>Institución</span>
-                  <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
-                  <button onClick={onGoEvents} className={styles.dropdownButton}>Events</button>
-                </div>
-              )}
-            </div>
-
-            <DisabledText>Noticias</DisabledText>
-
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.joinLink}>
-              <Button variant="primary" size="md">Únete</Button>
-            </a>
-          </nav>
-        )}
-
-        {isMobileNav && (
-          <button onClick={onToggleMobileMenu} aria-label="Menú" className={styles.mobileMenuButton}>
-            <span className={styles.hamburgerLine} />
-            <span className={styles.hamburgerLine} />
-            <span className={styles.hamburgerLineShort} />
-          </button>
-        )}
-      </div>
-
-      {isMobileNav && mobileMenuOpen && (
-        <div className={styles.mobileMenu}>
-          {NAV_DISABLED.map((item) => (
-            <span key={item} className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>{item}</span>
-          ))}
-
-          <button
-            onClick={onToggleLearnDropdown}
-            aria-expanded={learnDropdownOpen}
-            className={`${styles.mobileMenuRow} ${styles.mobileAccordionTrigger}`}
-          >
-            Aprender
-            <svg
-              className={`${styles.mobileChevron} ${learnDropdownOpen ? styles.mobileChevronOpen : ""}`}
-              width="10" height="6" viewBox="0 0 10 6" fill="none"
-            >
-              <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-
-          {learnDropdownOpen && (
-            <div className={styles.mobileAccordionPanel}>
-              <a href={ACADEMY_URL} className={styles.mobileAccordionButton}>AINI Academy</a>
-              <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
-              <button onClick={onGoEvents} className={styles.mobileAccordionButton}>Eventos</button>
-            </div>
-          )}
-
-          <span className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>Noticias</span>
-
-          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.mobileJoinWrap}>
-            <Button variant="primary" size="md">Únete</Button>
-          </a>
-        </div>
-      )}
-    </header>
-  );
-}
-
 function EventCard({ ev, elevated = false }) {
   return (
     <div className={`${styles.eventCard} ${elevated ? styles.eventCardElevated : ""}`}>
@@ -153,13 +52,13 @@ function EventCard({ ev, elevated = false }) {
       <h3 className={styles.eventTitle}>{ev.title}</h3>
       <p className={styles.eventDesc}>{ev.desc}</p>
       <a href={ev.href} target="_blank" rel="noopener noreferrer">
-        <Button variant="secondary" size="sm">{ev.cta ?? "Inscribirse"}</Button>
+        <Button variant="outline" size="sm">{ev.cta ?? "Inscribirse"}</Button>
       </a>
     </div>
   );
 }
 
-function HomeScreen({ onGoEvents }) {
+function HomeScreen() {
   return (
     <main>
       <section className={styles.heroSection}>
@@ -331,123 +230,38 @@ function LearnScreen() {
   );
 }
 
-function LinkedInIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
-    </svg>
-  );
-}
-
-function XIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-      <path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.47l8.6-9.83L0 1.15h7.59l5.24 6.93zM17.61 20.64h2.04L6.49 3.24H4.3z" />
-    </svg>
-  );
-}
-
-function YouTubeIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-      <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.07 0 12 0 12s0 3.93.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.93 24 12 24 12s0-3.93-.5-5.81zM9.55 15.57V8.43L15.82 12z" />
-    </svg>
-  );
-}
-
-const SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/ainilac", Icon: LinkedInIcon },
-  { label: "X", href: "https://x.com/ainilac", Icon: XIcon },
-  { label: "YouTube", href: "https://www.youtube.com/@ainilac", Icon: YouTubeIcon },
-];
-
-function Footer() {
-  const columns = [
-    { title: "Productos", links: [{ label: "DVZ", href: "https://x.dennisvivas.com/" }] },
-    { title: "Soluciones", links: [{ label: "Financial Services", href: "https://dennisvivas.com/" }] },
-    { title: "Recursos", links: [{ label: "Comunidad", href: WHATSAPP_URL }], disabled: ["Cursos"] },
-    { title: "Sobre nosotros", disabled: ["AI Institute"] },
-    { title: "Modelos", disabled: ["Claude"] },
-    { title: "Términos y condiciones", disabled: ["Política de privacidad"] },
-  ];
-  return (
-    <footer className={styles.footer}>
-      <div className={styles.footerGrid}>
-        {columns.map((col) => (
-          <div key={col.title} className={styles.footerCol}>
-            <span className={styles.footerColTitle}>{col.title}</span>
-            {(col.links || []).map((l) => (
-              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>{l.label}</a>
-            ))}
-            {(col.disabled || []).map((label) => (
-              <span key={label} className={styles.footerDisabled}>{label}</span>
-            ))}
-          </div>
-        ))}
-      </div>
-      <div className={styles.footerBottom}>
-        <p className={styles.footerCopy}>© 2026 AINI — Instituto de Inteligencia Artificial para América Latina y el Caribe.</p>
-        <div className={styles.socialRow}>
-          {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`AINI en ${label}`}
-              className={styles.socialLink}
-            >
-              <Icon />
-            </a>
-          ))}
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 export function AiniHome() {
-  const [screen, setScreen] = useState("home");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [learnDropdownOpen, setLearnDropdownOpen] = useState(false);
-  const mobileQuery = typeof window !== "undefined" ? "(max-width: 879px)" : null;
-  const [isMobileNav, setIsMobileNav] = useState(
-    typeof window !== "undefined" ? window.matchMedia(mobileQuery).matches : false
+  // «Eventos» del menú abre la misma pantalla venga de donde venga. Desde
+  // /academia llega como /#eventos, porque esa pantalla no tiene URL propia
+  // y un ancla no serviría: el HTML se sirve vacío y React monta después,
+  // así que el navegador no encuentra el destino al que saltar.
+  const [screen, setScreen] = useState(
+    typeof window !== "undefined" && window.location.hash === "#eventos" ? "events" : "home"
   );
-
-  useEffect(() => {
-    const mql = window.matchMedia(mobileQuery);
-    const onChange = () => setIsMobileNav(mql.matches);
-    onChange();
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
 
   const goTo = (next) => {
     setScreen(next);
-    setMobileMenuOpen(false);
-    setLearnDropdownOpen(false);
     if (typeof window !== "undefined") window.scrollTo(0, 0);
   };
 
   return (
     <div className={styles.page}>
-      <Header
-        screen={screen}
-        isMobileNav={isMobileNav}
-        mobileMenuOpen={mobileMenuOpen}
-        learnDropdownOpen={learnDropdownOpen}
+      <SiteHeader
         onGoHome={() => goTo("home")}
         onGoEvents={() => goTo("events")}
-        onToggleMobileMenu={() => setMobileMenuOpen((v) => !v)}
-        onToggleLearnDropdown={() => setLearnDropdownOpen((v) => !v)}
+        aprenderActivo={screen === "learn"}
+        cta={
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className={styles.joinLink}>
+            <Button variant="primary" size="md">Únete</Button>
+          </a>
+        }
       />
 
       {screen === "home" && <HomeScreen />}
       {screen === "events" && <EventsScreen />}
       {screen === "learn" && <LearnScreen />}
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }

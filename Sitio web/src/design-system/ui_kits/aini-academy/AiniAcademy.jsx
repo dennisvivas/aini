@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import isotipo from "../../assets/isotipo-sol-de-nodos.svg";
-import isotipoWhite from "../../assets/isotipo-sol-de-nodos-white.svg";
 import { Button } from "../../index.js";
+import { SiteHeader } from "../../components/layout/SiteHeader.jsx";
+import { SiteFooter } from "../../components/layout/SiteFooter.jsx";
 import { MetodoDiagrama, MetodoDiagramaMovil } from "./MetodoDiagrama.jsx";
 import cindyJpg from "./retratos/cindy-rojas.jpg";
 import cindyWebp from "./retratos/cindy-rojas.webp";
@@ -238,79 +238,6 @@ function EnlaceExterno({ href, children, className = "" }) {
         {" ↗"}
       </span>
     </a>
-  );
-}
-
-function Nav() {
-  const [fijo, setFijo] = useState(false);
-  const [menuAbierto, setMenuAbierto] = useState(false);
-
-  useEffect(() => {
-    let pendiente = false;
-    const alHacerScroll = () => {
-      if (pendiente) return;
-      pendiente = true;
-      requestAnimationFrame(() => {
-        setFijo(window.scrollY > 80);
-        pendiente = false;
-      });
-    };
-    alHacerScroll();
-    window.addEventListener("scroll", alHacerScroll, { passive: true });
-    return () => window.removeEventListener("scroll", alHacerScroll);
-  }, []);
-
-  const enlaces = [
-    { href: "#metodo", texto: "Método" },
-    { href: "#curriculum", texto: "Currículum" },
-    { href: "#precio", texto: "Precio" },
-  ];
-
-  return (
-    <header id="nav" className={`${styles.nav} ${fijo ? styles.navFijo : ""}`}>
-      <div className={styles.navInterior}>
-        <a href={AINI_URL} className={styles.marca}>
-          <img src={isotipo} alt="Isotipo AINI, sol de nodos" width={32} height={32} />
-          <span className={styles.marcaNombre}>AINI Academy</span>
-        </a>
-
-        <nav className={styles.navEnlaces} aria-label="Secciones de la página">
-          {enlaces.map((e) => (
-            <a key={e.href} href={e.href} className={styles.navEnlace}>
-              {e.texto}
-            </a>
-          ))}
-        </nav>
-
-        <div className={styles.navDerecha}>
-          <span className={styles.navFecha}>
-            {INICIO_COHORTE_LARGO} · {CUPOS_TOTALES} cupos
-          </span>
-          <CtaAplicar size="md" />
-        </div>
-
-        <button
-          type="button"
-          className={styles.hamburguesa}
-          aria-expanded={menuAbierto}
-          aria-controls="nav-menu-movil"
-          aria-label="Menú"
-          onClick={() => setMenuAbierto((v) => !v)}
-        >
-          <span className={styles.hamburguesaLinea} />
-          <span className={styles.hamburguesaLinea} />
-          <span className={styles.hamburguesaLinea} />
-        </button>
-      </div>
-
-      <div id="nav-menu-movil" className={styles.menuMovil} hidden={!menuAbierto}>
-        {enlaces.map((e) => (
-          <a key={e.href} href={e.href} className={styles.menuMovilEnlace} onClick={() => setMenuAbierto(false)}>
-            {e.texto}
-          </a>
-        ))}
-      </div>
-    </header>
   );
 }
 
@@ -634,17 +561,6 @@ function FaqYCierre() {
   );
 }
 
-function Footer() {
-  return (
-    <footer className={styles.footer}>
-      <div className={`${styles.interior} ${styles.footerInterior}`}>
-        <img src={isotipoWhite} alt="" width={28} height={28} />
-        <span>Instituto de Inteligencia Artificial para América Latina y el Caribe</span>
-      </div>
-    </footer>
-  );
-}
-
 /** Barra fija al pie, solo móvil: aparece cuando el CTA del hero sale de viewport. */
 function BarraMovil({ centinelaRef }) {
   const [visible, setVisible] = useState(false);
@@ -679,7 +595,9 @@ export function AiniAcademy() {
 
   return (
     <div className={styles.pagina}>
-      <Nav />
+      {/* Mismo nav y mismo footer que ainilac.com. El único cambio es el
+          botón: aquí convierte en vez de llevar al grupo de WhatsApp. */}
+      <SiteHeader aprenderActivo cta={<CtaAplicar size="md" />} />
       <main>
         <Hero centinelaRef={centinelaRef} />
         <Construir />
@@ -690,7 +608,7 @@ export function AiniAcademy() {
         <Precio />
         <FaqYCierre />
       </main>
-      <Footer />
+      <SiteFooter />
       <BarraMovil centinelaRef={centinelaRef} />
     </div>
   );

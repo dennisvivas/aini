@@ -1,0 +1,24 @@
+/* Pie común del sitio: home y landing de AINI Academy. */
+
+.footer { margin-top: auto; background: var(--ini-black); padding: 56px 20px 32px; }
+.footerGrid {
+  max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px; padding-bottom: 32px; border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.footerCol { display: flex; flex-direction: column; gap: 10px; }
+.footerColTitle { font-size: var(--fs-caption); font-weight: var(--fw-semibold); letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: rgba(255, 255, 255, 0.45); }
+.footerLink { color: var(--ini-white); font-size: var(--fs-body); }
+.footerLink:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+.footerDisabled { font-size: var(--fs-body); color: rgba(255, 255, 255, 0.35); cursor: default; }
+.footerBottom {
+  max-width: 1280px; margin: 24px auto 0; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: space-between; gap: 16px;
+}
+.footerCopy { flex: 1 1 320px; margin: 0; font-size: var(--fs-caption); color: rgba(255, 255, 255, 0.4); }
+.socialRow { display: flex; align-items: center; gap: 4px; }
+.socialLink {
+  display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+  border-radius: var(--radius-lg); color: rgba(255, 255, 255, 0.55); transition: color 0.15s ease;
+}
+.socialLink:hover { color: var(--ini-white); }
+.socialLink:focus-visible { color: var(--ini-white); outline: 2px solid var(--focus-ring); outline-offset: 2px; }

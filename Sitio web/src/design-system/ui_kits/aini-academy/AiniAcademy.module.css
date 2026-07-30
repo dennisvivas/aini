@@ -203,127 +203,6 @@
 .s7 { --d: 420ms; }
 .s8 { --d: 480ms; }
 
-/* ── nav ───────────────────────────────────────────────────────────── */
-
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: var(--surface-page);
-  border-bottom: var(--border-width) solid transparent;
-  transition: border-color var(--dur-fast) var(--ease-ui);
-  /* Mismo canal lateral que las bandas: el contenido queda alineado. */
-  padding-inline: clamp(var(--space-4), 8.33vw, 120px);
-}
-
-.navFijo { border-bottom-color: var(--ini-sand); }
-
-.navInterior {
-  max-width: 1200px;
-  margin-inline: auto;
-  padding-block: var(--space-4);
-  display: flex;
-  align-items: center;
-  gap: var(--space-6);
-}
-
-.marca {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  text-decoration: none;
-  color: var(--text-primary);
-  transition: color var(--dur-fast) var(--ease-ui);
-}
-
-.marca:hover { color: var(--accent-cta); }
-
-.marca:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 4px;
-}
-
-.marcaNombre {
-  font-family: var(--font-serif);
-  font-weight: var(--fw-bold);
-  font-size: var(--fs-body-lg);
-  line-height: var(--lh-heading);
-  white-space: nowrap;
-}
-
-.navEnlaces {
-  display: flex;
-  gap: var(--space-5);
-  font-size: var(--fs-small);
-}
-
-.navEnlace {
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: color var(--dur-fast) var(--ease-ui);
-}
-
-.navEnlace:hover { color: var(--accent-cta); }
-
-.navEnlace:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 4px;
-}
-
-.navDerecha {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: var(--space-5);
-}
-
-.navFecha {
-  font-size: var(--fs-small);
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.hamburguesa {
-  display: none;
-  margin-left: auto;
-  flex-direction: column;
-  gap: var(--space-1);
-  width: 20px;
-  padding: var(--space-2) 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.hamburguesaLinea {
-  height: var(--border-width-strong);
-  background: var(--text-primary);
-}
-
-.hamburguesa:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 4px;
-}
-
-.menuMovil {
-  display: none;
-  flex-direction: column;
-  padding: var(--space-2) var(--space-4) var(--space-4);
-  border-top: var(--border-width) solid var(--ini-sand);
-}
-
-.menuMovilEnlace {
-  padding: var(--space-3) 0;
-  color: var(--text-primary);
-  text-decoration: none;
-  font-size: var(--fs-body);
-}
-
-.menuMovilEnlace:focus-visible {
-  outline: 2px solid var(--focus-ring);
-  outline-offset: 4px;
-}
-
 /* ── 01 hero ───────────────────────────────────────────────────────── */
 
 .heroGrid {
@@ -744,22 +623,6 @@
 
 .cuposCifra { font-weight: var(--fw-semibold); }
 
-/* ── footer ────────────────────────────────────────────────────────── */
-
-.footer {
-  background: var(--surface-inverse);
-  padding-block: var(--space-6);
-  padding-inline: clamp(var(--space-4), 8.33vw, 120px);
-}
-
-.footerInterior {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  font-size: var(--fs-small);
-  color: var(--ini-sand);
-}
-
 /* ── barra de CTA fija (solo móvil) ────────────────────────────────── */
 
 .barra {
@@ -791,10 +654,6 @@
   .h2 { font-size: var(--fs-h2); }
 }
 
-@media (max-width: 899px) {
-  .navFecha { display: none; }
-}
-
 /* ═══ móvil ════════════════════════════════════════════════════════ */
 
 @media (max-width: 719px) {
@@ -802,22 +661,6 @@
     padding-block: var(--space-7);
     padding-inline: var(--space-4);
   }
-
-  .nav { padding-inline: var(--space-4); }
-
-  .navInterior { gap: var(--space-4); }
-
-  .menuMovil { padding-inline: 0; }
-
-  .navEnlaces,
-  .navDerecha { display: none; }
-
-  .hamburguesa { display: flex; }
-
-  .menuMovil { display: flex; }
-  .menuMovil[hidden] { display: none; }
-
-  .marcaNombre { font-size: var(--fs-body); }
 
   /* El CTA del hero sale del flujo: pasa a la barra fija al pie. */
   .heroAcciones { display: none; }
@@ -897,18 +740,11 @@
   .faqGrid { gap: var(--space-6); }
   .cierreColumna { order: -1; }
 
-  .footer { padding-inline: var(--space-4); }
-
   /* La barra fija es la última capa: sin este colchón tapa el footer y no
      hay scroll que lo descubra. */
   .pagina { padding-bottom: 88px; }
 
   .ctaAncho.ctaAncho { width: 100%; }
-
-  .footerInterior {
-    flex-wrap: wrap;
-    row-gap: var(--space-2);
-  }
 
   .barra { display: block; }
 }
