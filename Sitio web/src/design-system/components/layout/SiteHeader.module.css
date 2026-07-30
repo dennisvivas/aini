@@ -1,0 +1,71 @@
+/* Cabecera común del sitio: home y landing de AINI Academy. */
+
+.header { position: sticky; top: 0; z-index: 40; background: var(--ini-black); }
+.headerInner { max-width: 1280px; margin: 0 auto; padding: 0 20px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+.brand {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  background: none; border: none; padding: 0; text-decoration: none;
+}
+.brand:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+.brandLogo { width: 30px; height: 30px; display: block; }
+.brandName { font-family: var(--font-serif); font-weight: var(--fw-bold); font-size: var(--fs-h3); color: var(--ini-white); letter-spacing: 0.01em; }
+
+.nav { display: flex; align-items: center; gap: 28px; }
+
+.disabledText { font-size: var(--fs-body); cursor: default; user-select: none; color: rgba(255, 255, 255, 0.35); }
+
+.learnWrap { position: relative; }
+.learnButton {
+  background: none; border: none; padding: 0; display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-sans); font-size: var(--fs-body); font-weight: var(--fw-regular);
+  color: var(--ini-white); cursor: pointer;
+}
+.learnButton:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+.learnButtonActive { font-weight: var(--fw-bold); }
+
+.learnDropdown {
+  position: absolute; top: 36px; left: 0; background: var(--surface-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: 12px; min-width: 200px;
+  display: flex; flex-direction: column; gap: 4px; z-index: 1;
+}
+.dropdownLabel {
+  padding: 4px 12px; font-size: var(--fs-caption); font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-eyebrow); text-transform: uppercase; color: var(--text-muted);
+}
+.dropdownItemDisabled { padding: 10px 12px; font-family: var(--font-sans); font-size: var(--fs-body); color: rgba(23, 23, 23, 0.35); cursor: default; }
+.dropdownDivider { height: 1px; background: var(--border-subtle); margin: 6px 4px; }
+.dropdownButton {
+  display: block; width: 100%; text-align: left; background: none; border: none; padding: 10px 12px; border-radius: var(--radius-sm);
+  font-family: var(--font-sans); font-size: var(--fs-body); font-weight: var(--fw-medium); color: var(--text-primary); cursor: pointer;
+  text-decoration: none;
+}
+.dropdownButton:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+
+.mobileMenuButton { background: none; border: none; padding: 8px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; }
+.mobileMenuButton:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
+.hamburgerLine { width: 24px; height: 2px; background: var(--ini-white); display: block; }
+.hamburgerLineShort { width: 16px; height: 2px; background: var(--ini-white); display: block; }
+
+.mobileMenu { background: var(--ini-black); border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 16px 20px 24px; display: flex; flex-direction: column; }
+.mobileMenuRow { padding: 14px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.mobileMenuDisabled { font-size: var(--fs-body); color: rgba(255, 255, 255, 0.35); cursor: default; }
+
+.mobileAccordionTrigger {
+  width: 100%; background: none; border: none; padding: 14px 4px; display: flex; align-items: center; justify-content: space-between;
+  font-family: var(--font-sans); font-size: var(--fs-body); font-weight: var(--fw-regular); color: var(--ini-white); cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mobileChevron { transition: transform 0.15s ease; color: var(--ini-white); }
+.mobileChevronOpen { transform: rotate(180deg); }
+
+.mobileAccordionPanel {
+  display: flex; flex-direction: column; padding-left: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.mobileAccordionPanel .mobileMenuDisabled { padding: 12px 4px; }
+.mobileAccordionButton {
+  display: block; text-align: left; background: none; border: none; padding: 12px 4px; font-family: var(--font-sans);
+  font-size: var(--fs-body); font-weight: var(--fw-medium); color: var(--ini-white); cursor: pointer;
+  text-decoration: none;
+}
+.mobileCtaWrap { margin-top: 16px; }
