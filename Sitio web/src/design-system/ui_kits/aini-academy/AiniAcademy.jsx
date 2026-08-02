@@ -90,17 +90,16 @@ const SEMANAS = [
 ];
 
 const PERFILES = [
+  // Los dos perfiles abren con una pregunta, así que la segunda oración va
+  // suelta: el guion de continuación que había antes cortaba la frase.
   {
-    titulo: "Trabajas en un laboratorio de innovación",
-    detalle:
-      "— público o privado — y necesitas mostrar un proyecto interno funcionando, no un piloto en PowerPoint.",
+    titulo: "¿Trabajas o quieres participar en un laboratorio de innovación público o privado?",
+    detalle: "Necesitas mostrar un proyecto interno funcionando, no un piloto en PowerPoint.",
   },
   {
-    titulo: "¿Quieres lanzar un nuevo negocio?",
-    // Sin el guion de continuación del otro perfil: detrás de una pregunta
-    // rompe la frase. Aquí la segunda oración va suelta.
+    titulo: "¿Quieres lanzar un nuevo producto o servicio digital?",
     detalle:
-      "Tienes el criterio de negocio y la experiencia, pero nunca construiste un producto por tu cuenta.",
+      "Tienes el criterio de negocio y la experiencia, pero nunca construiste un producto o servicio digital por tu cuenta.",
   },
 ];
 
@@ -108,8 +107,8 @@ const INCLUSIONES = [
   "16 sesiones en vivo de 1 hora, grabadas",
   "Más de 30 horas de material curado",
   "Canal de dudas en Slack con los instructores",
-  "Office hours semanales",
-  "Feedback semanal sobre tu proyecto",
+  "1 hora de Office hours semanales",
+  "1 evento presencial de networking en Lima",
   "Certificado AINI de participación o de aprobación",
   "1 proyecto acompañado, con 2 entregas publicadas",
 ];

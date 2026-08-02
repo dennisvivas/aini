@@ -1,5 +1,4 @@
 import React from "react";
-import { Callout } from "../../index.js";
 import { SiteHeader } from "../../components/layout/SiteHeader.jsx";
 import { SiteFooter } from "../../components/layout/SiteFooter.jsx";
 import { AccesoAlumni } from "../aini-academy/AccesoAlumni.jsx";
@@ -9,10 +8,10 @@ import styles from "./PaginaLegal.module.css";
  * Armazón de las páginas legales. Solo maquetación: el texto lo trae cada
  * página en `secciones`, para que revisar el contenido no obligue a leer JSX.
  *
- * ⚠️ El contenido de estas páginas es una redacción de buena fe siguiendo la
- * Ley 29733 y el Código de Protección y Defensa del Consumidor. NO ha pasado
- * por revisión de un abogado. El aviso también va visible en la página: si se
- * quita de aquí, quitarlo también de la nota, no antes.
+ * ⚠️ El contenido se redactó siguiendo la Ley 29733 y el Código de Protección
+ * y Defensa del Consumidor, pero NO ha pasado por revisión de un abogado. El
+ * aviso que lo decía en la propia página se retiró por decisión del cliente,
+ * así que este comentario es lo único que queda registrándolo.
  */
 export function PaginaLegal({ titulo, actualizado, intro, secciones }) {
   return (
@@ -21,14 +20,6 @@ export function PaginaLegal({ titulo, actualizado, intro, secciones }) {
       <main className={styles.contenido}>
         <h1 className={styles.h1}>{titulo}</h1>
         <p className={styles.actualizado}>Última actualización: {actualizado}</p>
-
-        <div className={styles.aviso}>
-          <Callout title="Documento pendiente de revisión legal" tone="notice">
-            Este texto fue redactado siguiendo la Ley N.° 29733 de Protección de Datos Personales y
-            el Código de Protección y Defensa del Consumidor (Ley N.° 29571) como referencia.
-            Requiere revisión de un abogado antes de considerarse definitivo.
-          </Callout>
-        </div>
 
         {intro && <p className={styles.intro}>{intro}</p>}
 

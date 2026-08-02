@@ -34,8 +34,6 @@
   margin: 0 0 var(--space-6);
 }
 
-.aviso { margin-bottom: var(--space-6); }
-
 .intro {
   margin: 0 0 var(--space-7);
   color: var(--text-muted);

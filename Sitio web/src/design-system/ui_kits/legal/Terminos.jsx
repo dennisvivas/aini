@@ -116,6 +116,18 @@ const SECCIONES = [
       "Cualquier controversia se somete a los jueces y tribunales del distrito judicial de Lima, sin perjuicio del derecho de la persona consumidora a acudir al Instituto Nacional de Defensa de la Competencia y de la Protección de la Propiedad Intelectual (INDECOPI) conforme al Código de Protección y Defensa del Consumidor.",
     ],
   },
+  // El punto clave es la irretroactividad: el Código de Protección y Defensa
+  // del Consumidor no admite modificar unilateralmente, en perjuicio de quien
+  // ya contrató, las condiciones bajo las que contrató.
+  {
+    titulo: "Cambios en esta política",
+    parrafos: [
+      "AINI puede actualizar estos términos para reflejar cambios legales, tributarios o en la forma en que presta el servicio. La versión vigente es siempre la publicada en esta página, identificada por su fecha de última actualización.",
+      "Los cambios no se aplican de forma retroactiva. Quien ya fue admitido y pagó conserva las condiciones vigentes al momento de contratar —incluidos el precio, la modalidad, el alcance del programa y la garantía de devolución—, aunque estos términos cambien después. Modificar unilateralmente en perjuicio de la persona consumidora las condiciones bajo las que contrató no está permitido por el Código de Protección y Defensa del Consumidor.",
+      "Cuando el cambio sea sustancial y afecte a personas ya matriculadas, se comunica por correo electrónico con una anticipación razonable antes de que entre en vigor. Si no aceptas el cambio, puedes resolver el contrato sin penalidad y solicitar la devolución de la parte proporcional no ejecutada del servicio.",
+      `Para cualquier consulta sobre una modificación puedes escribirnos a ${IDENTIFICACION_LEGAL.correo}.`,
+    ],
+  },
 ];
 
 export function Terminos() {
