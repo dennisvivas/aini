@@ -5,13 +5,29 @@ import styles from "./SiteHeader.module.css";
 export const ACADEMY_URL = "/academia/";
 export const WHATSAPP_URL = "https://chat.whatsapp.com/EHKnMXdPdBO7dHNvIYj5Fc";
 
-const NAV_DISABLED = ["Investigación", "Política", "Compromisos"];
+// Las clases gratis no se listan en el sitio: el calendario vive en Luma y es
+// la única fuente. El menú lleva directo ahí, en pestaña nueva.
+export const CLASES_GRATIS_URL = "https://luma.com/ainilac";
+
+export const MENTORES_URL = "/academia/mentores";
+
+// Las páginas legales las enlaza el pie de TODO el sitio, así que sus rutas
+// viven aquí, junto al resto de destinos compartidos, y no dentro del kit de
+// la academia: si se mueven, se mueven en un solo sitio.
+export const TERMINOS_URL = "/academia/terminos";
+export const PRIVACIDAD_URL = "/academia/privacidad";
+export const PREGUNTAS_URL = "/academia/preguntas-frecuentes";
+
+// Ítems del instituto que todavía no tienen destino. Se pintan inertes, como
+// señal de hacia dónde va el sitio, y solo aparecen en el menú del instituto:
+// la academia no los hereda.
+const NAV_INSTITUTO_INERTES = ["Investigación", "Política", "Compromisos"];
+
+// Frentes de la academia que todavía no tienen página. Se pintan inertes, con
+// el mismo gris que los del instituto, hasta que existan.
+const NAV_ACADEMIA_INERTES = ["Partners", "Nosotros"];
 
 const CONSULTA_MOVIL = "(max-width: 879px)";
-
-function DisabledText({ children }) {
-  return <span className={styles.disabledText}>{children}</span>;
-}
 
 function Chevron({ className = "" }) {
   return (
@@ -22,14 +38,27 @@ function Chevron({ className = "" }) {
 }
 
 /**
- * Cabecera común del sitio. La usan la home y la landing de AINI Academy:
- * si cambia el menú, cambia en las dos.
+ * Cabecera del sitio, con dos menús distintos según dónde estés.
+ *
+ * - `variante="instituto"` (por defecto) — ainilac.com: los frentes del think
+ *   tank, con los que aún no tienen destino en gris, y el desplegable
+ *   «Aprender» desde el que se llega a la academia.
+ * - `variante="academia"` — /academia y sus páginas: el menú del programa, sin
+ *   «Aprender» (ya estás dentro) y con Partners y Nosotros todavía en gris.
+ *   `aprenderActivo` no aplica aquí: no hay desplegable que marcar.
+ *
+ * Son productos distintos con navegaciones distintas, no una que evolucionó y
+ * dejó atrás a la otra: por eso conviven en el mismo componente en vez de que
+ * un cambio en una arrastre a la otra. Lo compartido —la marca, el
+ * desplegable «Aprender», el hueco del CTA y el menú móvil— sigue siendo uno
+ * solo, que es lo que evita que se desalineen.
  *
  * `onGoHome` y `onGoEvents` existen porque en la home esos destinos son
  * pantallas de estado, sin URL propia. Desde cualquier otra página se
  * omiten y el componente cae a enlaces normales.
  */
-export function SiteHeader({ cta, onGoHome, onGoEvents, aprenderActivo = false }) {
+export function SiteHeader({ cta, onGoHome, onGoEvents, aprenderActivo = false, variante = "instituto" }) {
+  const esAcademia = variante === "academia";
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [aprenderAbierto, setAprenderAbierto] = useState(false);
   const [esMovil, setEsMovil] = useState(
@@ -86,35 +115,61 @@ export function SiteHeader({ cta, onGoHome, onGoEvents, aprenderActivo = false }
 
         {!esMovil && (
           <nav className={styles.nav} aria-label="Principal">
-            {NAV_DISABLED.map((item) => (
-              <DisabledText key={item}>{item}</DisabledText>
-            ))}
+            {!esAcademia &&
+              NAV_INSTITUTO_INERTES.map((item) => (
+                <span key={item} className={styles.disabledText}>
+                  {item}
+                </span>
+              ))}
 
-            <div className={styles.learnWrap}>
-              <button
-                type="button"
-                onClick={() => setAprenderAbierto((v) => !v)}
-                aria-expanded={aprenderAbierto}
-                className={`${styles.learnButton} ${aprenderActivo ? styles.learnButtonActive : ""}`}
-              >
-                Aprender
-                <Chevron />
-              </button>
-              {aprenderAbierto && (
-                <div className={styles.learnDropdown}>
-                  <span className={styles.dropdownLabel}>Aprender</span>
-                  <a href={ACADEMY_URL} className={styles.dropdownButton}>
-                    AINI Academy
-                  </a>
-                  <div className={styles.dropdownDivider} />
-                  <span className={styles.dropdownLabel}>Institución</span>
-                  <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
-                  {eventos}
-                </div>
-              )}
-            </div>
+            {!esAcademia && (
+              <div className={styles.learnWrap}>
+                <button
+                  type="button"
+                  onClick={() => setAprenderAbierto((v) => !v)}
+                  aria-expanded={aprenderAbierto}
+                  className={`${styles.learnButton} ${aprenderActivo ? styles.learnButtonActive : ""}`}
+                >
+                  Aprender
+                  <Chevron />
+                </button>
+                {aprenderAbierto && (
+                  <div className={styles.learnDropdown}>
+                    <span className={styles.dropdownLabel}>Aprender</span>
+                    <a href={ACADEMY_URL} className={styles.dropdownButton}>
+                      AINI Academy
+                    </a>
+                    <div className={styles.dropdownDivider} />
+                    <span className={styles.dropdownLabel}>Institución</span>
+                    <span className={styles.dropdownItemDisabled}>Sobre nosotros</span>
+                    {eventos}
+                  </div>
+                )}
+              </div>
+            )}
 
-            <DisabledText>Noticias</DisabledText>
+            {esAcademia ? (
+              <>
+                <a
+                  href={CLASES_GRATIS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.navLink}
+                >
+                  Clases gratis
+                </a>
+                <a href={MENTORES_URL} className={styles.navLink}>
+                  Mentores
+                </a>
+                {NAV_ACADEMIA_INERTES.map((item) => (
+                  <span key={item} className={styles.disabledText}>
+                    {item}
+                  </span>
+                ))}
+              </>
+            ) : (
+              <span className={styles.disabledText}>Noticias</span>
+            )}
 
             {cta}
           </nav>
@@ -138,41 +193,72 @@ export function SiteHeader({ cta, onGoHome, onGoEvents, aprenderActivo = false }
 
       {esMovil && menuAbierto && (
         <div id="menu-movil" className={styles.mobileMenu}>
-          {NAV_DISABLED.map((item) => (
-            <span key={item} className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>
-              {item}
-            </span>
-          ))}
+          {!esAcademia &&
+            NAV_INSTITUTO_INERTES.map((item) => (
+              <span key={item} className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>
+                {item}
+              </span>
+            ))}
 
-          <button
-            type="button"
-            onClick={() => setAprenderAbierto((v) => !v)}
-            aria-expanded={aprenderAbierto}
-            className={`${styles.mobileMenuRow} ${styles.mobileAccordionTrigger}`}
-          >
-            Aprender
-            <Chevron className={`${styles.mobileChevron} ${aprenderAbierto ? styles.mobileChevronOpen : ""}`} />
-          </button>
+          {!esAcademia && (
+            <>
+              <button
+                type="button"
+                onClick={() => setAprenderAbierto((v) => !v)}
+                aria-expanded={aprenderAbierto}
+                className={`${styles.mobileMenuRow} ${styles.mobileAccordionTrigger}`}
+              >
+                Aprender
+                <Chevron className={`${styles.mobileChevron} ${aprenderAbierto ? styles.mobileChevronOpen : ""}`} />
+              </button>
 
-          {aprenderAbierto && (
-            <div className={styles.mobileAccordionPanel}>
-              <a href={ACADEMY_URL} className={styles.mobileAccordionButton}>
-                AINI Academy
-              </a>
-              <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
-              {onGoEvents ? (
-                <button type="button" onClick={irA(onGoEvents)} className={styles.mobileAccordionButton}>
-                  Eventos
-                </button>
-              ) : (
-                <a href="/#eventos" className={styles.mobileAccordionButton}>
-                  Eventos
-                </a>
+              {aprenderAbierto && (
+                <div className={styles.mobileAccordionPanel}>
+                  <a href={ACADEMY_URL} className={styles.mobileAccordionButton}>
+                    AINI Academy
+                  </a>
+                  <span className={styles.mobileMenuDisabled}>Sobre nosotros</span>
+                  {onGoEvents ? (
+                    <button type="button" onClick={irA(onGoEvents)} className={styles.mobileAccordionButton}>
+                      Eventos
+                    </button>
+                  ) : (
+                    <a href="/#eventos" className={styles.mobileAccordionButton}>
+                      Eventos
+                    </a>
+                  )}
+                </div>
               )}
-            </div>
+            </>
           )}
 
-          <span className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>Noticias</span>
+          {esAcademia ? (
+            <>
+              <a
+                href={CLASES_GRATIS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={cerrarTodo}
+                className={`${styles.mobileMenuRow} ${styles.mobileMenuLink}`}
+              >
+                Clases gratis
+              </a>
+              <a
+                href={MENTORES_URL}
+                onClick={cerrarTodo}
+                className={`${styles.mobileMenuRow} ${styles.mobileMenuLink}`}
+              >
+                Mentores
+              </a>
+              {NAV_ACADEMIA_INERTES.map((item) => (
+                <span key={item} className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>
+                  {item}
+                </span>
+              ))}
+            </>
+          ) : (
+            <span className={`${styles.mobileMenuRow} ${styles.mobileMenuDisabled}`}>Noticias</span>
+          )}
 
           <div className={styles.mobileCtaWrap}>{cta}</div>
         </div>

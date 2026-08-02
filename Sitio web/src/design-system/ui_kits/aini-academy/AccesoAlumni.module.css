@@ -1,0 +1,17 @@
+/* Botón secundario de la cabecera de la academia.
+   Ni `secondary` ni `outline` del design system sirven aquí sin retoque: los
+   dos son tinta sobre transparente y la cabecera es negra, así que quedarían
+   invisibles. Se reconstruye en arena, que es el color de apoyo sobre negro.
+   La clase se duplica para ganarle en especificidad al Button, igual que en
+   el resto del kit. */
+
+.alumni.alumni {
+  background: transparent;
+  color: color-mix(in srgb, var(--ini-sand) 72%, transparent);
+  border: var(--border-width) solid color-mix(in srgb, var(--ini-sand) 40%, transparent);
+  /* Sin el `opacity: 0.45` del estado deshabilitado: a ese nivel el rótulo
+     deja de leerse sobre negro. El apagado se comunica con el color, no
+     desvaneciendo el botón entero. */
+  opacity: 1;
+  cursor: not-allowed;
+}

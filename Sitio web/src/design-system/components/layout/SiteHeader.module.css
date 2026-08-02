@@ -13,7 +13,17 @@
 
 .nav { display: flex; align-items: center; gap: 28px; }
 
+/* Ítems del instituto sin destino todavía. Solo existen en `variante="instituto"`. */
 .disabledText { font-size: var(--fs-body); cursor: default; user-select: none; color: rgba(255, 255, 255, 0.35); }
+
+/* Enlace suelto del nav de escritorio: mismo peso y color que `.learnButton`,
+   que es su vecino. No se puede reusar `.dropdownButton` — ese va sobre el
+   panel blanco del desplegable y su color es tinta, no blanco. */
+.navLink {
+  font-family: var(--font-sans); font-size: var(--fs-body); font-weight: var(--fw-regular);
+  color: var(--ini-white); text-decoration: none;
+}
+.navLink:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 4px; }
 
 .learnWrap { position: relative; }
 .learnButton {
@@ -50,6 +60,7 @@
 .mobileMenu { background: var(--ini-black); border-top: 1px solid rgba(255, 255, 255, 0.12); padding: 16px 20px 24px; display: flex; flex-direction: column; }
 .mobileMenuRow { padding: 14px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
 .mobileMenuDisabled { font-size: var(--fs-body); color: rgba(255, 255, 255, 0.35); cursor: default; }
+.mobileMenuLink { font-family: var(--font-sans); font-size: var(--fs-body); color: var(--ini-white); text-decoration: none; }
 
 .mobileAccordionTrigger {
   width: 100%; background: none; border: none; padding: 14px 4px; display: flex; align-items: center; justify-content: space-between;

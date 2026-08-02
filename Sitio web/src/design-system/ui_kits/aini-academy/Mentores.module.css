@@ -1,0 +1,123 @@
+/* Página de mentores (/academia/mentores).
+   Misma paleta y mismas tarjetas que la landing, en una sola columna ancha. */
+
+.pagina {
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenido {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: var(--space-9) clamp(var(--space-4), 8.33vw, 120px);
+}
+
+.h1 {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-3);
+}
+
+.bajada {
+  color: var(--text-muted);
+  margin: 0 0 var(--space-7);
+  max-width: 780px;
+}
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Sin hover, igual que en la landing: solo el CTA y los enlaces reaccionan. */
+.tarjeta {
+  background: var(--surface-card);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+
+.nombre {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-1);
+}
+
+.cargo {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-4);
+}
+
+.enlace {
+  color: var(--accent-cta);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-ui);
+}
+
+.enlace:hover { color: var(--accent-cta-hover); }
+
+.enlace:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+  transition: none;
+}
+
+
+.cierre {
+  margin-top: var(--space-8);
+  padding-top: var(--space-7);
+  border-top: var(--border-width) solid var(--ini-sand);
+  max-width: 780px;
+}
+
+.h2 {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-3);
+}
+
+.cierreTexto {
+  margin: 0 0 var(--space-5);
+  color: var(--text-muted);
+}
+
+/* La clase se duplica para ganarle en especificidad al Button del design
+   system, igual que en la landing. */
+.botonMentor.botonMentor { cursor: not-allowed; }
+
+@media (max-width: 1023px) {
+  .rejilla { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 719px) {
+  .contenido { padding-block: var(--space-7); }
+  .h1 { font-size: var(--fs-h2); }
+  .rejilla { grid-template-columns: 1fr; }
+  .tarjeta { padding: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enlace { transition-duration: 1ms; }
+}
