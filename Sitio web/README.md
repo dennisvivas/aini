@@ -43,7 +43,11 @@ coincidencia, y las demás cabeceras de seguridad se siguen aplicando.
 Las tres aperturas se comprobaron contra el embebido real. Sin ellas el
 navegador bloquea:
 
-- `script-src-elem` → el script `js.hsforms.net/forms/embed/<portal>.js` nunca carga.
+- `script-src-elem` → el script `js.hsforms.net/forms/embed/<portal>.js` nunca
+  carga. El embed v4 además referencia `static.hsappstatic.net` desde el
+  contexto de la página padre (`staticDomainPrefix` dentro del propio script),
+  así que ese dominio también va en `script-src`: comprobado que sin él el
+  navegador lo bloquea.
 - `frame-src` → el iframe donde HubSpot pinta el formulario.
 - `style-src-attr` → el `height` que HubSpot escribe en el contenedor; sin eso
   el formulario mide 0px y no se ve.
