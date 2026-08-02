@@ -15,7 +15,6 @@
       ]
     },
     {
-      "//": "Única página que embebe el formulario de HubSpot. La excepción al CSP vive aquí y no en la regla global para que el resto del sitio siga con `script-src 'self'`. Va después de la regla general: en cabeceras repetidas, la última coincidencia es la que se aplica. Las tres aperturas se comprobaron contra el embebido real, no de oídas: sin ellas el navegador bloquea `script-src-elem` (el script), `frame-src` (el iframe donde HubSpot pinta el formulario) y `style-src-attr` (el `height` que HubSpot escribe en el contenedor; sin eso el formulario mide 0px y no se ve). `connect-src` y `form-action` NO se abren: el envío ocurre dentro del iframe, en el contexto de HubSpot. `style-src-elem 'self'` mantiene cerrada la inyección de <style> —HubSpot no inyecta ninguno— y en navegadores que no lo soporten se cae a `style-src`, que sí funciona.",
       "source": "/academia/postular",
       "headers": [
         { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' https://js.hsforms.net; style-src 'self' 'unsafe-inline'; style-src-elem 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://js.hsforms.net; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests" }

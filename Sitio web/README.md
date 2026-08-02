@@ -28,6 +28,31 @@ npm run dev
 
 El sitio se publica en [ainilac.com](https://ainilac.com) vía Vercel (Root Directory = `Sitio web`). Cabeceras de seguridad (CSP estricta, HSTS, `X-Frame-Options`, etc.) están en [`vercel.json`](./vercel.json), calibradas para igualar el baseline de dennisvivas.com.
 
+**`vercel.json` no admite comentarios.** Es JSON estricto y Vercel valida el
+esquema: cualquier clave desconocida —incluido el truco de `"//"` para dejar una
+nota— hace fallar el despliegue entero con «Deployment failed». Si algo de esa
+configuración necesita explicación, va aquí.
+
+### La excepción al CSP de `/academia/postular`
+
+Hay dos reglas de cabeceras. La global mantiene la política estricta; una
+segunda, acotada a `/academia/postular`, abre lo mínimo para el formulario de
+HubSpot. Va **después** de la general: en una cabecera repetida gana la última
+coincidencia, y las demás cabeceras de seguridad se siguen aplicando.
+
+Las tres aperturas se comprobaron contra el embebido real. Sin ellas el
+navegador bloquea:
+
+- `script-src-elem` → el script `js.hsforms.net/forms/embed/<portal>.js` nunca carga.
+- `frame-src` → el iframe donde HubSpot pinta el formulario.
+- `style-src-attr` → el `height` que HubSpot escribe en el contenedor; sin eso
+  el formulario mide 0px y no se ve.
+
+**No** se abren `connect-src` ni `form-action`: el envío ocurre dentro del
+iframe, en el contexto de HubSpot. `style-src-elem 'self'` mantiene cerrada la
+inyección de `<style>` —HubSpot no inyecta ninguno— y en navegadores que no lo
+soporten se cae a `style-src`, que sí funciona.
+
 Reglas del proyecto para mantener esa postura:
 
 - Las tipografías se autohospedan con `@fontsource/*` — no reintroducir `@import` a `fonts.googleapis.com` u otro CDN de fuentes, rompe `font-src 'self'`.
