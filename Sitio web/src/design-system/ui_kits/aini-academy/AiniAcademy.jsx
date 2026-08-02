@@ -94,12 +94,12 @@ const PERFILES = [
   // suelta: el guion de continuación que había antes cortaba la frase.
   {
     titulo: "¿Trabajas o quieres participar en un laboratorio de innovación público o privado?",
-    detalle: "Necesitas mostrar un proyecto interno funcionando, no un piloto en PowerPoint.",
+    detalle: "¿Necesitas mostrar un proyecto interno funcionando, no un piloto en PowerPoint?",
   },
   {
     titulo: "¿Quieres lanzar un nuevo producto o servicio digital?",
     detalle:
-      "Tienes el criterio de negocio y la experiencia, pero nunca construiste un producto o servicio digital por tu cuenta.",
+      "¿Tienes el criterio de negocio y la experiencia, pero nunca construiste un producto o servicio digital por tu cuenta?",
   },
 ];
 
