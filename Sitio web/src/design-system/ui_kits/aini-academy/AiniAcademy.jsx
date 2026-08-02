@@ -1,34 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../../index.js";
 import { SiteHeader } from "../../components/layout/SiteHeader.jsx";
 import { SiteFooter } from "../../components/layout/SiteFooter.jsx";
 import { MetodoDiagrama, MetodoDiagramaMovil } from "./MetodoDiagrama.jsx";
-import cindyJpg from "./retratos/cindy-rojas.jpg";
-import cindyWebp from "./retratos/cindy-rojas.webp";
-import jemilJpg from "./retratos/jemil-castro.jpg";
-import jemilWebp from "./retratos/jemil-castro.webp";
-import {
-  CALENDARIO_URL,
-  CUPOS_RESTANTES,
-  CUPOS_TOTALES,
-  HORARIO_SESIONES,
-  INICIO_COHORTE,
-  INICIO_COHORTE_LARGO,
-  PRIMERA_SESION,
-} from "./cohorte.js";
+import { AccesoAlumni } from "./AccesoAlumni.jsx";
+import { CtaPostular } from "./CtaPostular.jsx";
+import { Revelar, prefiereMenosMovimiento } from "./Revelar.jsx";
+import { COHORTE, ENTREVISTA_MINUTOS, EQUIPOS_TOTALES, FACILITADORES } from "./academia.config.js";
+import { calcularCuenta, fechaConDia, fechaLarga } from "./olas.js";
+import { useEstadoPostulacion } from "./usePostulacion.js";
 import styles from "./AiniAcademy.module.css";
 
 const AINI_URL = "https://ainilac.com/";
-
-const FICHA = [
-  { etiqueta: "INICIO", valor: INICIO_COHORTE_LARGO },
-  { etiqueta: "DURACIÓN", valor: "8 semanas", nota: "16 horas en total" },
-  { etiqueta: "SESIONES", valor: "Mar y jue", nota: HORARIO_SESIONES },
-  { etiqueta: "PRECIO", valor: "USD 299", nota: "pago único" },
-  // ENTREGAS e IDIOMA se omiten en móvil (ficha 2×2).
-  { etiqueta: "ENTREGAS", valor: "1 proyecto", nota: "entregas cada mes", soloDesktop: true },
-  { etiqueta: "IDIOMA", valor: "Español", soloDesktop: true },
-];
 
 const ENTREGABLES = [
   {
@@ -43,223 +26,157 @@ const ENTREGABLES = [
   },
 ];
 
+// La Semana 0 es asíncrona y se entrega el día de la admisión: no cuenta
+// dentro de las ocho semanas, y por eso su rótulo no es «SEMANA 0».
 const SEMANAS = [
-  { n: 1, tema: "Claude.ai chat" },
-  { n: 2, tema: "Claude Code en el escritorio, CLI o IDE" },
-  { n: 3, tema: "Claude Cowork" },
-  { n: 4, tema: "Claude Design", entrega: "Entrega 1 de 2" },
-  { n: 5, tema: "Uso vía API de Claude, Bedrock, Vertex o Microsoft Foundry" },
-  { n: 6, tema: "Panel de analítica de Claude Code + Analytics API" },
-  { n: 7, tema: "Plan mode: revisar la intención antes de editar" },
-  { n: 8, tema: "Introducción a orquestación agéntica", entrega: "Entrega 2 de 2" },
-];
-
-const INSTRUCTORES = [
   {
-    nombre: "Cindy Rojas",
-    cargo: "IMF · MAS-CS @UPenn",
-    href: "https://www.linkedin.com/in/cindy-rojas-alvarado/",
-    jpg: cindyJpg,
-    webp: cindyWebp,
-    encuadre: styles.retratoCindy,
+    rotulo: "PREVIO · ASÍNCRONA",
+    titulo: "Fundamentos",
+    detalle:
+      "Qué hay debajo: servidores, redes, datos y código. Para llegar parejos a la semana 1, mira nuestras clases teóricas grabadas.",
+    meta: "Se entrega al ser admitido",
+    previo: true,
   },
   {
-    nombre: "Jemil Castro",
-    cargo: "Claude Certified Architect · AI Engineer & LLM Developer",
-    href: "https://www.linkedin.com/in/jemil-castro-72146843/",
-    jpg: jemilJpg,
-    webp: jemilWebp,
-    encuadre: styles.retratoJemil,
+    rotulo: "SEMANA 1",
+    titulo: "Tu primer asistente",
+    detalle: "Conviertes una tarea que hoy haces a mano en instrucciones que otro ejecuta.",
+    meta: "2 sesiones",
+  },
+  {
+    rotulo: "SEMANA 2",
+    titulo: "Del chat a tu computadora",
+    detalle: "La IA deja de responderte y empieza a crear y modificar archivos por ti.",
+    meta: "2 sesiones",
+  },
+  {
+    rotulo: "SEMANA 3",
+    titulo: "Tu carpeta de trabajo, automatizada",
+    detalle: "Reportes, planillas y documentos que se preparan solos.",
+    meta: "2 sesiones",
+  },
+  {
+    rotulo: "SEMANA 4",
+    titulo: "Publicas tu landing",
+    detalle: "Diseño y salida a producción.",
+    entrega: "Entrega 1 de 2",
+    meta: "2 sesiones",
+  },
+  {
+    rotulo: "SEMANA 5",
+    titulo: "Conectas tus sistemas",
+    detalle: "Que tu CRM, tu base de datos o tu hoja de cálculo hablen con el agente.",
+    meta: "2 sesiones",
+  },
+  {
+    rotulo: "SEMANA 6",
+    titulo: "Mides lo que automatizaste",
+    detalle: "Cuánto tiempo ahorras y dónde falla el proceso.",
+    meta: "2 sesiones",
+  },
+  {
+    rotulo: "SEMANA 7",
+    titulo: "Control antes de ejecutar",
+    detalle: "Revisas qué va a hacer el agente antes de que lo haga.",
+    meta: "2 sesiones",
+  },
+  {
+    rotulo: "SEMANA 8",
+    titulo: "Varios agentes trabajando juntos",
+    detalle: "Tu flujo completo corriendo sin ti.",
+    entrega: "Entrega 2 de 2",
+    meta: "2 sesiones",
   },
 ];
 
-// Los sitios van como texto, no como enlace: la landing tiene una sola
-// conversión y estas tarjetas no deben sacar a nadie de la página.
 const PERFILES = [
-  { nombre: "Manuel de la Colina", cargo: "CEO, Juztina", sitio: "juztina.ai" },
-  { nombre: "Ian Lee", cargo: "CEO, Nexor", sitio: "getnexor.ai" },
-  { nombre: "Vicente Cruz", cargo: "CEO, Sheriff", sitio: "thesheriff.cl" },
+  {
+    titulo: "Trabajas en un laboratorio de innovación",
+    detalle:
+      "— público o privado — y necesitas mostrar un proyecto interno funcionando, no un piloto en PowerPoint.",
+  },
+  {
+    titulo: "¿Quieres lanzar un nuevo negocio?",
+    // Sin el guion de continuación del otro perfil: detrás de una pregunta
+    // rompe la frase. Aquí la segunda oración va suelta.
+    detalle:
+      "Tienes el criterio de negocio y la experiencia, pero nunca construiste un producto por tu cuenta.",
+  },
 ];
 
 const INCLUSIONES = [
-  "16 sesiones en vivo, grabadas",
-  "Tutor todos los días",
-  "Office hours con instructor",
-  "Feedback semanal de la cohorte",
-  "Certificación AINI",
-  "1 proyecto acompañado, con 2 entregas",
+  "16 sesiones en vivo de 1 hora, grabadas",
+  "Más de 30 horas de material curado",
+  "Canal de dudas en Slack con los instructores",
+  "Office hours semanales",
+  "Feedback semanal sobre tu proyecto",
+  "Certificado AINI de participación o de aprobación",
+  "1 proyecto acompañado, con 2 entregas publicadas",
 ];
-
-// El precio de la membresía (USD 299/año) solo puede aparecer aquí: coincide
-// con el precio del bootcamp y fuera del FAQ se confunde con él.
-const FAQ = [
-  {
-    pregunta: "¿Puedo tomar el bootcamp a mi propio ritmo?",
-    respuesta:
-      "Las sesiones son en vivo, martes y jueves, 7–8 p.m., hora de Perú (GMT-5). Todas quedan grabadas, así que puedes recuperar cualquiera. El contenido entre sesiones son 25 minutos diarios que tomas cuando quieras.",
-  },
-  {
-    pregunta: "¿Recibo un certificado al completar el bootcamp?",
-    respuesta:
-      "Sí. Con la participación en las sesiones recibes el certificado de participación de AINI. Si además entregas y apruebas los dos entregables, recibes el certificado de aprobación de AINI.",
-  },
-  {
-    pregunta: "¿Cuánto cuesta la membresía AINI?",
-    respuesta: "USD 299 al año. Es un producto adicional, independiente de este bootcamp.",
-  },
-  {
-    pregunta: "¿Qué incluye la membresía?",
-    respuesta:
-      "Acceso durante un año a todo nuestro contenido, descuentos en nuestros eventos privados y descuento en el evento anual.",
-  },
-];
-
-const STAGGER = [styles.s0, styles.s1, styles.s2, styles.s3, styles.s4, styles.s5, styles.s6, styles.s7, styles.s8];
-
-function prefiereMenosMovimiento() {
-  return typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-/** Entrada de sección: opacity 0→1 + translateY 12px→0, al 20% de viewport, una vez. */
-function Revelar({ children, indice = 0, className = "", as: Etiqueta = "div" }) {
-  const ref = useRef(null);
-  const [dentro, setDentro] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (prefiereMenosMovimiento()) {
-      setDentro(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entradas, obs) => {
-        entradas.forEach((e) => {
-          if (!e.isIntersecting) return;
-          setDentro(true);
-          obs.unobserve(e.target);
-        });
-      },
-      { threshold: 0.2 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  return (
-    <Etiqueta
-      ref={ref}
-      className={`${styles.revelar} ${STAGGER[Math.min(indice, 8)]} ${dentro ? styles.dentro : ""} ${className}`}
-    >
-      {children}
-    </Etiqueta>
-  );
-}
-
-const ROTULO_CTA = "Aplicar ahora";
-const ROTULO_ABRIENDO = "Abriendo el calendario…";
-
-// Hoy nunca es true: `CUPOS_RESTANTES` es una constante. El estado queda
-// escrito para cuando los cupos se conecten a una fuente real.
-const AGOTADO = CUPOS_RESTANTES <= 0;
-
-/**
- * CTA primario. Abre HubSpot Meetings en pestaña nueva; el cambio de rótulo es
- * puramente visual y no retrasa la apertura. Clicable desde el primer frame.
- */
-function CtaAplicar({ size = "lg", ancho = false }) {
-  const [rotulo, setRotulo] = useState(ROTULO_CTA);
-  const [ocupado, setOcupado] = useState(false);
-  const [oculto, setOculto] = useState(false);
-  const temporizadores = useRef([]);
-
-  useEffect(() => () => temporizadores.current.forEach(clearTimeout), []);
-
-  const programar = (fn, ms) => temporizadores.current.push(setTimeout(fn, ms));
-
-  const abrirCalendario = useCallback(() => {
-    if (ocupado) return;
-    // La secuencia anterior ya terminó: sus ids no sirven para nada y sin
-    // esto el array crece con cada clic.
-    temporizadores.current = [];
-    setOcupado(true);
-    setOculto(true);
-    programar(() => {
-      setRotulo(ROTULO_ABRIENDO);
-      setOculto(false);
-    }, 120);
-    window.open(CALENDARIO_URL, "_blank", "noopener");
-    programar(() => {
-      setOculto(true);
-      programar(() => {
-        setRotulo(ROTULO_CTA);
-        setOculto(false);
-        setOcupado(false);
-      }, 120);
-    }, 1200);
-  }, [ocupado]);
-
-  if (AGOTADO) {
-    return (
-      <Button
-        variant="primary"
-        size={size}
-        aria-disabled="true"
-        className={`${styles.cta} ${styles.ctaAgotado} ${ancho ? styles.ctaAncho : ""}`}
-      >
-        Cupos agotados
-      </Button>
-    );
-  }
-
-  return (
-    <Button
-      variant="primary"
-      size={size}
-      onClick={abrirCalendario}
-      aria-busy={ocupado || undefined}
-      className={`${styles.cta} ${ancho ? styles.ctaAncho : ""}`}
-    >
-      <span className={`${styles.ctaRotulo} ${oculto ? styles.ctaRotuloOculto : ""}`}>{rotulo}</span>
-      {!ocupado && (
-        <span className={styles.ctaFlecha} aria-hidden="true">
-          →
-        </span>
-      )}
-    </Button>
-  );
-}
 
 function EnlaceExterno({ href, children, className = "" }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className={`${styles.enlace} ${className}`}>
       {children}
-      <span className={styles.enlaceExt} aria-hidden="true">
-        {" ↗"}
-      </span>
     </a>
   );
 }
 
-function Hero({ centinelaRef }) {
+function fichaDeCohorte(estado) {
+  return [
+    {
+      etiqueta: "INICIO",
+      valor: fechaLarga(COHORTE.inicioFecha),
+      nota: estado.fase === "abierta" ? "postulaciones abiertas" : "postulaciones cerradas",
+    },
+    {
+      etiqueta: "DURACIÓN",
+      valor: `${COHORTE.semanas} semanas`,
+      nota: `${COHORTE.sesiones} sesiones en vivo de 1 hora`,
+    },
+    { etiqueta: "SESIONES", valor: COHORTE.diasTexto, nota: COHORTE.horaTexto },
+    { etiqueta: "MODALIDAD", valor: "100% online", nota: "¿no tienes equipo? te ayudamos" },
+    // ENTREGAS e IDIOMA se omiten en móvil (ficha 2×2).
+    { etiqueta: "ENTREGAS", valor: "1 proyecto", nota: "2 entregas publicadas", soloDesktop: true },
+    { etiqueta: "IDIOMA", valor: "Español", soloDesktop: true },
+  ];
+}
+
+function Hero({ centinelaRef, estado }) {
+  const eyebrow =
+    estado.fase === "abierta"
+      ? `PRIMERA COHORTE · ${EQUIPOS_TOTALES} EQUIPOS · ${estado.ola.nombre.toUpperCase()} ABIERTA HASTA EL ${fechaLarga(
+          estado.ola.hasta
+        ).toUpperCase()}`
+      : `PRIMERA COHORTE · ${EQUIPOS_TOTALES} EQUIPOS · POSTULACIONES CERRADAS`;
+
   return (
     <section id="hero" className={`${styles.banda} ${styles.bandaNegra}`}>
       <div className={`${styles.interior} ${styles.heroGrid}`}>
         <div>
-          <span className={styles.eyebrowArena}>PRIMERA COHORTE · {CUPOS_TOTALES} CUPOS</span>
+          <span className={styles.eyebrowArena}>{eyebrow}</span>
           <h1 className={styles.h1}>De idea a producto funcionando en 8 semanas</h1>
-          <p className={styles.heroLead}>IA aplicada a tu propio producto o servicio digital.</p>
+          <p className={styles.heroLead}>
+            Traes tu propio proyecto y un equipo de tres. En ocho semanas lo tienes publicado y
+            funcionando. No necesitas ser programador.
+          </p>
           <div className={styles.heroAcciones}>
-            <CtaAplicar size="lg" />
+            <CtaPostular estado={estado} size="lg" />
             <a href="#metodo" className={styles.heroEnlace}>
               Ver el método
             </a>
           </div>
+          {estado.fase === "abierta" && (
+            <p className={styles.heroMicrocopy}>
+              Entrevista de {ENTREVISTA_MINUTOS} minutos por videollamada. Seleccionamos{" "}
+              {EQUIPOS_TOTALES} equipos.
+            </p>
+          )}
           <div ref={centinelaRef} className={styles.centinela} aria-hidden="true" />
         </div>
 
         <dl className={styles.ficha}>
-          {FICHA.map((f) => (
+          {fichaDeCohorte(estado).map((f) => (
             <div key={f.etiqueta} className={`${styles.fichaCelda} ${f.soloDesktop ? styles.soloDesktop : ""}`}>
               <dt className={styles.fichaEtiqueta}>{f.etiqueta}</dt>
               <dd className={styles.fichaValor}>
@@ -304,7 +221,7 @@ function Metodo() {
     <section id="metodo" className={`${styles.banda} ${styles.bandaBlanca}`}>
       <div className={styles.interior}>
         <Revelar as="h2" className={`${styles.h2} ${styles.h2Ancho}`} indice={0}>
-          Tu tutor está todos los días. Tu profesor, cuando el tutor no basta.
+          Clases en vivo dos veces por semana. Un canal de dudas abierto el resto de días.
         </Revelar>
         <Revelar as="p" className={`${styles.lead} ${styles.leadAmplio}`} indice={1}>
           Un ciclo de cuatro movimientos, ocho veces.
@@ -328,20 +245,29 @@ function Curriculum() {
           Ocho semanas
         </Revelar>
         <Revelar as="p" className={styles.lead} indice={1}>
-          Adaptado a casos de negocio de América Latina.
+          Todo el curso sobre un caso de uso para tu trabajo diario.
         </Revelar>
         <div className={styles.tabla}>
           {SEMANAS.map((s, i) => (
-            <Revelar key={s.n} indice={i + 2} className={styles.fila}>
-              <span className={styles.filaSemana}>SEMANA {s.n}</span>
-              <span className={styles.filaTema}>{s.tema}</span>
-              {s.entrega && (
-                <span className={styles.filaEntrega}>
-                  <span className={styles.marcaEntrega} aria-hidden="true" />
-                  {s.entrega}
-                </span>
-              )}
-              <span className={styles.filaSesiones}>2 sesiones</span>
+            <Revelar
+              key={s.rotulo}
+              indice={i + 2}
+              className={`${styles.fila} ${s.previo ? styles.filaPrevio : ""}`}
+            >
+              <span className={styles.filaRotulo}>{s.rotulo}</span>
+              <span className={styles.filaCuerpo}>
+                <span className={styles.filaTitulo}>{s.titulo}</span>
+                <span className={styles.filaDetalle}>{s.detalle}</span>
+              </span>
+              <span className={styles.filaAccion}>
+                {s.entrega && (
+                  <span className={styles.filaEntrega}>
+                    <span className={styles.marcaEntrega} aria-hidden="true" />
+                    {s.entrega}
+                  </span>
+                )}
+                <span className={styles.filaSesiones}>{s.meta}</span>
+              </span>
             </Revelar>
           ))}
         </div>
@@ -355,27 +281,29 @@ function Instructores() {
     <section id="instructores" className={`${styles.banda} ${styles.bandaBlanca}`}>
       <div className={styles.interior}>
         <Revelar as="h2" className={styles.h2} indice={0}>
-          Quién facilita
+          Aprende de quienes operan hoy
         </Revelar>
-        <div className={styles.dosColumnas}>
-          {INSTRUCTORES.map((p, i) => (
+        <div className={styles.tresColumnas}>
+          {FACILITADORES.map((p, i) => (
             <Revelar key={p.nombre} indice={i + 1} className={styles.tarjetaInstructor}>
+              {/* `alt=""` en los tres: el nombre va como texto justo debajo y
+                  repetirlo haría que el lector de pantalla lo diga dos veces. */}
               <picture>
                 <source srcSet={p.webp} type="image/webp" />
                 <img
                   src={p.jpg}
-                  alt={p.nombre}
+                  alt=""
                   width={96}
                   height={96}
                   loading="lazy"
                   decoding="async"
-                  className={`${styles.retrato} ${p.encuadre}`}
+                  className={`${styles.retrato} ${styles[p.encuadre]}`}
                 />
               </picture>
               <div>
                 <p className={styles.personaNombre}>{p.nombre}</p>
-                <p className={styles.personaCargo}>{p.cargo}</p>
-                <EnlaceExterno href={p.href} className={styles.enlaceFuerte}>
+                <p className={styles.personaCargo}>{p.rol}</p>
+                <EnlaceExterno href={p.linkedin} className={styles.enlaceFuerte}>
                   LinkedIn
                 </EnlaceExterno>
               </div>
@@ -394,16 +322,17 @@ function ParaQuien() {
         <Revelar as="h2" className={`${styles.h2} ${styles.h2ConLead}`} indice={0}>
           Para quién es
         </Revelar>
-        <Revelar as="p" className={styles.lead} indice={1}>
-          Al finalizar el bootcamp, esperamos que puedas construir productos y servicios con impacto
-          real en América Latina en el sector público y sector privado
+        <Revelar as="p" className={`${styles.lead} ${styles.leadAncho}`} indice={1}>
+          Diseñado para analistas, especialistas de instituciones públicas y privadas, fundadores y
+          principales colaboradores de startups, ingenieros de software que quieren saber de negocio.
+          No necesitas saber programación para participar.
         </Revelar>
-        <div className={styles.tresColumnas}>
+        <div className={styles.dosColumnas}>
           {PERFILES.map((p, i) => (
-            <Revelar key={p.nombre} indice={i + 2} className={styles.tarjetaElevada}>
-              <p className={styles.personaNombre}>{p.nombre}</p>
-              <p className={`${styles.personaCargo} ${styles.personaCargoAmplio}`}>{p.cargo}</p>
-              <p className={styles.sitioTexto}>{p.sitio}</p>
+            <Revelar key={p.titulo} indice={i + 2} className={styles.tarjetaElevada}>
+              <p className={styles.perfilTexto}>
+                <strong className={styles.perfilTitulo}>{p.titulo}</strong> {p.detalle}
+              </p>
             </Revelar>
           ))}
         </div>
@@ -412,19 +341,24 @@ function ParaQuien() {
   );
 }
 
-function Precio() {
+function Inversion({ estado }) {
+  const bono = estado.ola?.bono;
+
   return (
-    <section id="precio" className={`${styles.banda} ${styles.bandaNegra}`}>
-      <div className={`${styles.interior} ${styles.precioGrid}`}>
+    <section id="inversion" className={`${styles.banda} ${styles.bandaNegra}`}>
+      <div className={`${styles.interior} ${styles.inversionGrid}`}>
         <div>
-          {/* El mockup no dibuja título aquí, pero sin él quien navega por
-              encabezados se salta el precio entero. */}
-          <h2 className={styles.soloLectores}>Precio</h2>
-          <span className={styles.eyebrowArena}>PRIMERA COHORTE</span>
-          <p className={styles.cifra}>USD 299</p>
-          <p className={styles.precioNota}>Pago único.</p>
+          <h2 className={styles.h2}>Inversión</h2>
+          <p className={styles.inversionLead}>
+            Completa tu postulación para recibir los detalles de la inversión y del proceso de
+            admisión.
+          </p>
+          <p className={styles.inversionNota}>
+            Tenemos tres modalidades: individual, en equipo de tres y con facturación a tu empresa.
+          </p>
         </div>
         <div>
+          <p className={styles.inclusionesTitulo}>Todas incluyen:</p>
           <ul className={styles.inclusiones}>
             {INCLUSIONES.map((texto) => (
               <li key={texto} className={styles.inclusion}>
@@ -435,12 +369,18 @@ function Precio() {
               </li>
             ))}
           </ul>
-          <CtaAplicar size="lg" ancho />
+          {bono && (
+            <p className={styles.bono}>
+              <strong>
+                Solo en la {estado.ola.nombre}, hasta el {fechaLarga(estado.ola.hasta)}:
+              </strong>{" "}
+              {bono}.
+            </p>
+          )}
+          <CtaPostular estado={estado} size="lg" ancho />
           <p className={styles.garantia}>
-            Garantía: si después de la primera semana no es para ti, te devolvemos el 100%.
-          </p>
-          <p className={styles.notaPago}>
-            Pago por transferencia: al registrarte enviamos los datos de la cuenta por correo.
+            Garantía: si después de la primera semana esto no es para ti, escríbenos y te devolvemos
+            el 100%. Sin preguntas.
           </p>
         </div>
       </div>
@@ -455,27 +395,15 @@ const CELDAS_CONTADOR = [
   ["seg", "SEG"],
 ];
 
-function calcularCuenta(ahora) {
-  const objetivo = Date.parse(INICIO_COHORTE);
-  const restante = Math.max(0, objetivo - ahora);
-  const s = Math.floor(restante / 1000);
-  const p = (n) => String(n).padStart(2, "0");
-  return {
-    dias: p(Math.floor(s / 86400)),
-    horas: p(Math.floor((s % 86400) / 3600)),
-    min: p(Math.floor((s % 3600) / 60)),
-    seg: p(s % 60),
-  };
-}
-
 /** Sin animación de dígitos: se reemplaza el texto cada segundo y nada más. */
-function Contador() {
-  const [cuenta, setCuenta] = useState(() => calcularCuenta(Date.now()));
+function Contador({ objetivo }) {
+  const [cuenta, setCuenta] = useState(() => calcularCuenta(Date.now(), objetivo));
 
   useEffect(() => {
-    const id = setInterval(() => setCuenta(calcularCuenta(Date.now())), 1000);
+    setCuenta(calcularCuenta(Date.now(), objetivo));
+    const id = setInterval(() => setCuenta(calcularCuenta(Date.now(), objetivo)), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [objetivo]);
 
   return (
     <div className={styles.contador} aria-live="off">
@@ -489,80 +417,55 @@ function Contador() {
   );
 }
 
-function TarjetaCierre() {
+function TarjetaCierre({ estado }) {
+  if (estado.fase === "cerrada") {
+    return (
+      <div className={styles.tarjetaCierre}>
+        <h2 className={styles.h2Cierre}>Postulaciones cerradas</h2>
+        <p className={styles.cierreNota}>
+          La cohorte empieza el {fechaConDia(COHORTE.inicioFecha)}, {COHORTE.horaInicioTexto}.
+          Escríbenos si quieres saber de la siguiente.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.tarjetaCierre}>
-      <h2 className={styles.h2Cierre}>Empieza el {INICIO_COHORTE_LARGO}</h2>
-      <p className={styles.cierreNota}>Primera sesión: {PRIMERA_SESION}</p>
-      <Contador />
-      <p className={styles.cupos}>
-        Cupos restantes: <strong className={styles.cuposCifra}>{CUPOS_RESTANTES}</strong> de{" "}
-        {CUPOS_TOTALES}
+      <h2 className={styles.h2Cierre}>
+        La {estado.ola.nombre} cierra el {fechaLarga(estado.ola.hasta)}
+      </h2>
+      <p className={styles.cierreNota}>
+        Quedan {estado.ola.equipos} equipos en esta ola. La cohorte empieza el{" "}
+        {fechaConDia(COHORTE.inicioFecha)}, {COHORTE.horaInicioTexto}.
       </p>
-      <CtaAplicar size="lg" ancho />
+      <Contador objetivo={estado.cierraEl} />
+      <p className={styles.escasez}>
+        {EQUIPOS_TOTALES} equipos en la primera cohorte · la {estado.ola.nombre} cierra el{" "}
+        {fechaLarga(estado.ola.hasta)}
+      </p>
+      <CtaPostular estado={estado} size="lg" ancho />
     </div>
   );
 }
 
-function Faq() {
-  // Varios paneles pueden estar abiertos a la vez: es el comportamiento
-  // aprobado en el mockup.
-  const [abiertos, setAbiertos] = useState({});
-
+/**
+ * Banda de cierre. Las preguntas frecuentes salieron de la landing y viven en
+ * `/academia/preguntas-frecuentes`, enlazadas desde el pie: aquí queda el
+ * contador y el último empujón a postular.
+ */
+function Cierre({ estado }) {
   return (
-    <div className={styles.faqLista}>
-      {FAQ.map((f, i) => {
-        const abierto = !!abiertos[i];
-        return (
-          <div key={f.pregunta} className={styles.faqItem}>
-            <button
-              type="button"
-              id={`faq-boton-${i}`}
-              className={styles.faqBoton}
-              aria-expanded={abierto}
-              aria-controls={`faq-panel-${i}`}
-              onClick={() => setAbiertos((s) => ({ ...s, [i]: !s[i] }))}
-            >
-              <span>{f.pregunta}</span>
-              <span className={styles.faqSigno} aria-hidden="true">
-                +
-              </span>
-            </button>
-            <div
-              id={`faq-panel-${i}`}
-              role="region"
-              aria-labelledby={`faq-boton-${i}`}
-              className={`${styles.faqPanel} ${abierto ? styles.faqPanelAbierto : ""}`}
-            >
-              <div>
-                <p className={styles.faqRespuesta}>{f.respuesta}</p>
-              </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function FaqYCierre() {
-  return (
-    <section id="faq" className={`${styles.banda} ${styles.bandaHueso}`}>
-      <div className={`${styles.interior} ${styles.faqGrid}`}>
-        <div className={styles.faqColumna}>
-          <h2 className={styles.h2}>Preguntas frecuentes</h2>
-          <Faq />
-        </div>
-        <div className={styles.cierreColumna}>
-          <TarjetaCierre />
-        </div>
+    <section id="cierre" className={`${styles.banda} ${styles.bandaHueso}`}>
+      <div className={`${styles.interior} ${styles.cierreInterior}`}>
+        <TarjetaCierre estado={estado} />
       </div>
     </section>
   );
 }
 
 /** Barra fija al pie, solo móvil: aparece cuando el CTA del hero sale de viewport. */
-function BarraMovil({ centinelaRef }) {
+function BarraMovil({ centinelaRef, estado }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -583,33 +486,36 @@ function BarraMovil({ centinelaRef }) {
     return () => io.disconnect();
   }, [centinelaRef]);
 
+  if (estado.fase === "cerrada") return null;
+
   return (
     <div className={`${styles.barra} ${visible ? styles.barraVisible : ""}`}>
-      <CtaAplicar size="lg" ancho />
+      <CtaPostular estado={estado} size="lg" ancho />
     </div>
   );
 }
 
 export function AiniAcademy() {
   const centinelaRef = useRef(null);
+  const estado = useEstadoPostulacion();
 
   return (
     <div className={styles.pagina}>
       {/* Mismo nav y mismo footer que ainilac.com. El único cambio es el
           botón: aquí convierte en vez de llevar al grupo de WhatsApp. */}
-      <SiteHeader aprenderActivo cta={<CtaAplicar size="md" />} />
+      <SiteHeader variante="academia" cta={<AccesoAlumni />} />
       <main>
-        <Hero centinelaRef={centinelaRef} />
+        <Hero centinelaRef={centinelaRef} estado={estado} />
         <Construir />
         <Metodo />
         <Curriculum />
         <Instructores />
         <ParaQuien />
-        <Precio />
-        <FaqYCierre />
+        <Inversion estado={estado} />
+        <Cierre estado={estado} />
       </main>
-      <SiteFooter />
-      <BarraMovil centinelaRef={centinelaRef} />
+      <SiteFooter variante="academia" />
+      <BarraMovil centinelaRef={centinelaRef} estado={estado} />
     </div>
   );
 }

@@ -1,0 +1,81 @@
+/* Páginas legales: /academia/terminos y /academia/privacidad.
+   Una columna de lectura larga, sin diseño propio — tokens del DS y nada más. */
+
+.pagina {
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenido {
+  flex: 1;
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  padding: var(--space-9) var(--space-4);
+}
+
+.h1 {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-2);
+}
+
+.actualizado {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-6);
+}
+
+.aviso { margin-bottom: var(--space-6); }
+
+.intro {
+  margin: 0 0 var(--space-7);
+  color: var(--text-muted);
+}
+
+.seccion { margin-bottom: var(--space-7); }
+
+.h2 {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-4);
+}
+
+.parrafo { margin: 0 0 var(--space-4); }
+
+.enlace {
+  color: var(--accent-cta);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.enlace:hover { color: var(--accent-cta-hover); }
+
+.enlace:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.parrafo:last-child { margin-bottom: 0; }
+
+.lista {
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.listaItem { margin-bottom: var(--space-2); }
+
+@media (max-width: 719px) {
+  .contenido { padding-block: var(--space-7); }
+  .h1 { font-size: var(--fs-h2); }
+}

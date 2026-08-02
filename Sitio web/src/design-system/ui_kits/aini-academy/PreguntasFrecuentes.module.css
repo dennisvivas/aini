@@ -1,0 +1,119 @@
+/* Preguntas frecuentes (/academia/preguntas-frecuentes).
+   El acordeón se trajo tal cual desde la landing: mismo comportamiento y mismo
+   tratamiento visual, ahora en una columna de lectura. */
+
+.pagina {
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenido {
+  flex: 1;
+  width: 100%;
+  max-width: 780px;
+  margin-inline: auto;
+  padding: var(--space-9) var(--space-4);
+}
+
+.h1 {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--space-3);
+}
+
+.bajada {
+  color: var(--text-muted);
+  margin: 0 0 var(--space-7);
+}
+
+.lista { border-top: var(--border-width) solid var(--ini-sand); }
+
+.item {
+  border-bottom: var(--border-width) solid var(--ini-sand);
+  padding-block: 20px;
+}
+
+.boton {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-body-lg);
+  line-height: var(--lh-heading);
+  color: var(--text-primary);
+  transition: color var(--dur-fast) var(--ease-ui);
+}
+
+.boton:hover { color: var(--accent-cta); }
+
+.boton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 4px;
+  transition: none;
+}
+
+.signo {
+  flex: none;
+  display: inline-block;
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-h3);
+  line-height: 1;
+  color: var(--accent-cta);
+  transition: transform var(--dur-accordion) var(--ease-standard);
+}
+
+/* + → × */
+.boton[aria-expanded="true"] .signo { transform: rotate(45deg); }
+
+/* La altura se resuelve con grid-template-rows, que anima sin empujar el
+   layout. La visibilidad se retira al terminar la transición para que el panel
+   cerrado no sea alcanzable por teclado ni por lector de pantalla. */
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows var(--dur-accordion) var(--ease-standard),
+              visibility 0s linear var(--dur-accordion);
+}
+
+.panel > div { overflow: hidden; }
+
+.panelAbierto {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows var(--dur-accordion) var(--ease-standard),
+              visibility 0s;
+}
+
+.respuesta {
+  font-size: var(--fs-body);
+  color: var(--text-muted);
+  margin: var(--space-4) 0 0;
+}
+
+@media (max-width: 719px) {
+  .contenido { padding-block: var(--space-7); }
+  .h1 { font-size: var(--fs-h2); }
+  .boton { font-size: var(--fs-body); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boton, .signo, .panel, .panelAbierto {
+    transition-duration: 1ms;
+    transition-delay: 0ms;
+  }
+}

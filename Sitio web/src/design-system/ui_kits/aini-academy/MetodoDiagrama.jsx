@@ -45,9 +45,11 @@ export function MetodoDiagrama() {
     >
       <title id="d1t">Método AINI: un ciclo de cuatro movimientos que se repite ocho semanas</title>
       <desc id="d1d">
-        Entrada: declara tu proyecto. Ciclo de cuatro movimientos alrededor de un hub central que
-        marca ocho semanas: aprende en dosis cortas, aplica en vivo, itera con tu tutor, publica y
-        corrige. Salida: certifícate y enseña.
+        Entrada, paso 0: declara tu proyecto, no un ejercicio. De ahí se entra al ciclo por el
+        paso 1, aprende en dosis cortas, y se gira en el sentido de las agujas del reloj: paso 2,
+        aplica en vivo; paso 3, resuelve dudas en Slack; paso 4, publica y corrige, que vuelve al
+        paso 1. El centro marca que el ciclo se repite ocho semanas. Salida, paso 5: certifícate y
+        aplícalo en tu trabajo.
       </desc>
 
       <defs>
@@ -65,11 +67,15 @@ export function MetodoDiagrama() {
         <line x1="116" y1="232" x2="154" y2="232" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
       </g>
 
+      {/* El giro es horario y arranca a la izquierda, que es donde entra la
+          flecha del paso 0: así el orden de lectura coincide con el de los
+          números. Los arcos conservan la geometría original; lo que cambió es
+          qué paso ocupa cada posición. */}
       <g id="m-flechas">
-        <path id="m-arco12" data-arco="" className={styles.d700} d="M413.6 36.4 A200 200 0 0 1 567.6 190.4" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
-        <path id="m-arco23" data-arco="" className={styles.d800} d="M567.6 273.6 A200 200 0 0 1 413.6 427.6" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
-        <path id="m-arco34" data-arco="" className={styles.d900} d="M330.4 427.6 A200 200 0 0 1 176.4 273.6" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
-        <path id="m-arco41" data-arco="" className={styles.d1000} d="M176.4 190.4 A200 200 0 0 1 330.4 36.4" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
+        <path id="m-arco12" data-arco="" className={styles.d700} d="M176.4 190.4 A200 200 0 0 1 330.4 36.4" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
+        <path id="m-arco23" data-arco="" className={styles.d800} d="M413.6 36.4 A200 200 0 0 1 567.6 190.4" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
+        <path id="m-arco34" data-arco="" className={styles.d900} d="M567.6 273.6 A200 200 0 0 1 413.6 427.6" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
+        <path id="m-arco41" data-arco="" className={styles.d1000} d="M330.4 427.6 A200 200 0 0 1 176.4 273.6" fill="none" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
       </g>
 
       <g id="m-hub" data-paso="" className={styles.d1160}>
@@ -93,39 +99,43 @@ export function MetodoDiagrama() {
         <text x="372" y="236" textAnchor="middle" fontSize="12" fontWeight="600">×8 semanas</text>
       </g>
 
+      {/* Paso 1 al oeste: es la caja a la que apunta la entrada. */}
       <g id="m-nodo1" data-paso="" className={styles.d240}>
-        <rect x="286" y="71" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#171717" strokeWidth="1" />
-        <text className={styles.n} x="300" y="97">1</text>
-        <text className={styles.t} x="300" y="117">Aprende en dosis cortas</text>
-        <text className={styles.s} x="300" y="133">25 min al día</text>
+        <rect x="160" y="197" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#171717" strokeWidth="1" />
+        <text className={styles.n} x="174" y="223">1</text>
+        <text className={styles.t} x="174" y="243">Aprende en dosis cortas</text>
+        <text className={styles.s} x="174" y="259">25 min al día</text>
       </g>
 
       <g id="m-nodo2" data-paso="" className={styles.d340}>
-        <rect x="412" y="197" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#171717" strokeWidth="1" />
-        <text className={styles.n} x="426" y="223">2</text>
-        <text className={styles.t} x="426" y="243">Aplica en vivo</text>
-        <text className={styles.s} x="426" y="259">martes y jueves</text>
+        <rect x="286" y="71" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#171717" strokeWidth="1" />
+        <text className={styles.n} x="300" y="97">2</text>
+        <text className={styles.t} x="300" y="117">Aplica en vivo</text>
+        <text className={styles.s} x="300" y="133">martes y jueves</text>
       </g>
 
       <g id="m-nodo3" data-paso="" className={styles.d480}>
-        <rect x="286" y="323" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#C1440E" strokeWidth="1.5" />
-        <text className={styles.n} x="300" y="349" fill="#C1440E">3</text>
-        <text className={styles.t} x="300" y="369" fill="#C1440E">Itera con tu tutor</text>
-        <text className={styles.s} x="300" y="385">todos los días</text>
+        <rect x="412" y="197" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#C1440E" strokeWidth="1.5" />
+        <text className={styles.n} x="426" y="223" fill="#C1440E">3</text>
+        <text className={styles.t} x="426" y="243" fill="#C1440E">Resuelve dudas en Slack</text>
+        <text className={styles.s} x="426" y="259">toda la semana</text>
       </g>
 
       <g id="m-nodo4" data-paso="" className={styles.d580}>
-        <rect x="160" y="197" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#171717" strokeWidth="1" />
-        <text className={styles.n} x="174" y="223">4</text>
-        <text className={styles.t} x="174" y="243">Publica y corrige</text>
-        <text className={styles.s} x="174" y="259">cada semana</text>
+        <rect x="286" y="323" width="172" height="70" rx="4" fill="#FFFFFF" stroke="#171717" strokeWidth="1" />
+        <text className={styles.n} x="300" y="349">4</text>
+        <text className={styles.t} x="300" y="369">Publica y corrige</text>
+        <text className={styles.s} x="300" y="385">cada semana</text>
       </g>
 
       <g id="m-salida" data-paso="" className={styles.d1240}>
         <line x1="584" y1="232" x2="600" y2="232" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1an)" />
         <text className={styles.eb} x="604" y="170">SALIDA</text>
-        <rect x="604" y="196" width="112" height="72" rx="4" fill="#FFFFFF" stroke="#C9B79C" strokeWidth="1" />
-        <text className={styles.t} x="616" y="226">Certifícate y<tspan x="616" dy="16">enseña</tspan></text>
+        <rect x="604" y="180" width="112" height="104" rx="4" fill="#FFFFFF" stroke="#C9B79C" strokeWidth="1" />
+        <text className={styles.n} x="616" y="206">5</text>
+        <text className={styles.t} x="616" y="226">
+          Certifícate y<tspan x="616" dy="16">aplícalo en tu</tspan><tspan x="616" dy="16">trabajo</tspan>
+        </text>
       </g>
     </svg>
   );
@@ -145,10 +155,10 @@ export function MetodoDiagramaMovil() {
       aria-labelledby="d1mt d1md"
       className={`${styles.diagrama} ${styles.movil}`}
     >
-      <title id="d1mt">Método AINI en móvil: el mismo ciclo cerrado, en vertical</title>
+      <title id="d1mt">Método AINI en móvil: los seis pasos en vertical, del 0 al 5</title>
       <desc id="d1md">
-        Los cuatro movimientos se leen de arriba abajo y una vía de retorno los cierra en bucle,
-        ocho veces.
+        Los pasos se leen de arriba abajo, del 0 al 5. Del paso 4 una vía de retorno vuelve al
+        paso 1 y el ciclo se repite ocho veces antes de llegar a la salida.
       </desc>
 
       <defs>
@@ -182,8 +192,8 @@ export function MetodoDiagramaMovil() {
 
       <rect x="44" y="268" width="296" height="62" rx="4" fill="#FFFFFF" stroke="#C1440E" strokeWidth="1.5" />
       <text className={styles.n} x="58" y="294" fill="#C1440E">3</text>
-      <text className={styles.t} x="78" y="294" fill="#C1440E">Itera con tu tutor</text>
-      <text className={styles.s} x="58" y="316">todos los días</text>
+      <text className={styles.t} x="78" y="294" fill="#C1440E">Resuelve dudas en Slack</text>
+      <text className={styles.s} x="58" y="316">toda la semana</text>
       <line x1="192" y1="330" x2="192" y2="344" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1man)" />
 
       <rect x="44" y="346" width="296" height="62" rx="4" fill="#FFFFFF" stroke="#171717" strokeWidth="1" />
@@ -194,7 +204,8 @@ export function MetodoDiagramaMovil() {
       <line x1="300" y1="408" x2="300" y2="494" stroke="#171717" strokeWidth="1.2" markerEnd="url(#d1man)" />
       <text className={styles.eb} x="44" y="490">SALIDA</text>
       <rect x="44" y="498" width="296" height="56" rx="4" fill="#FFFFFF" stroke="#C9B79C" strokeWidth="1" />
-      <text className={styles.t} x="58" y="532">Certifícate y enseña</text>
+      <text className={styles.n} x="58" y="532">5</text>
+      <text className={styles.t} x="78" y="532">Certifícate y aplícalo en tu trabajo</text>
     </svg>
   );
 }

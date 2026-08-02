@@ -1,5 +1,5 @@
 import React from "react";
-import { WHATSAPP_URL } from "./SiteHeader.jsx";
+import { PREGUNTAS_URL, PRIVACIDAD_URL, TERMINOS_URL, WHATSAPP_URL } from "./SiteHeader.jsx";
 import styles from "./SiteFooter.module.css";
 
 function LinkedInIcon() {
@@ -38,19 +38,46 @@ const COLUMNAS = [
   { title: "Recursos", links: [{ label: "Comunidad", href: WHATSAPP_URL }], disabled: ["Cursos"] },
   { title: "Sobre nosotros", disabled: ["AI Institute"] },
   { title: "Modelos", disabled: ["Claude"] },
-  { title: "Términos y condiciones", disabled: ["Política de privacidad"] },
 ];
 
-/** Pie común del sitio. Lo usan la home y la landing de AINI Academy. */
-export function SiteFooter() {
+// La última columna es lo único que cambia entre los dos pies. El instituto
+// todavía no tiene sus propios documentos publicados, así que conserva el
+// bloque inerte que ya tenía; la academia sí los tiene y los enlaza.
+const LEGAL_INSTITUTO = { title: "Términos y condiciones", disabled: ["Política de privacidad"] };
+
+const LEGAL_ACADEMIA = {
+  title: "Legal",
+  links: [
+    { label: "Términos y condiciones", href: TERMINOS_URL, interno: true },
+    { label: "Política de privacidad", href: PRIVACIDAD_URL, interno: true },
+    { label: "Preguntas frecuentes", href: PREGUNTAS_URL, interno: true },
+  ],
+};
+
+/**
+ * Pie del sitio, con la misma división que la cabecera: `variante="instituto"`
+ * (por defecto) para ainilac.com y `variante="academia"` para /academia y sus
+ * páginas. Las cinco primeras columnas son idénticas en los dos; solo cambia
+ * la legal, porque los documentos publicados son los de la academia.
+ */
+export function SiteFooter({ variante = "instituto" }) {
+  const columnas = [...COLUMNAS, variante === "academia" ? LEGAL_ACADEMIA : LEGAL_INSTITUTO];
+
   return (
     <footer className={styles.footer}>
       <div className={styles.footerGrid}>
-        {COLUMNAS.map((col) => (
+        {columnas.map((col) => (
           <div key={col.title} className={styles.footerCol}>
             <span className={styles.footerColTitle}>{col.title}</span>
+            {/* Las páginas del propio sitio no abren pestaña nueva: el
+                target="_blank" es para los destinos externos. */}
             {(col.links || []).map((l) => (
-              <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>
+              <a
+                key={l.label}
+                href={l.href}
+                {...(l.interno ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+                className={styles.footerLink}
+              >
                 {l.label}
               </a>
             ))}
