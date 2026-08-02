@@ -57,6 +57,35 @@ iframe, en el contexto de HubSpot. `style-src-elem 'self'` mantiene cerrada la
 inyección de `<style>` —HubSpot no inyecta ninguno— y en navegadores que no lo
 soporten se cae a `style-src`, que sí funciona.
 
+#### Si vuelves a activar reCAPTCHA en el formulario, esta política lo rompe
+
+Esto costó encontrarlo, así que queda escrito. **reCAPTCHA no corre dentro del
+iframe de HubSpot: corre en nuestra página.** En el script de embed:
+
+- `window.document.head.appendChild()` inyecta
+  `google.com/recaptcha/enterprise.js` —con `recaptcha.net` de respaldo— en el
+  **documento padre**.
+- `createRecaptchaTarget()` crea el `<div>` del widget también en el padre, así
+  que el iframe del desafío lo gobierna **nuestro** `frame-src`.
+
+Con la política actual el formulario se ve, pero **no se puede enviar**: la
+verificación nunca pasa y, en consecuencia, tampoco salta la redirección a
+`meetings.hubspot.com`. Se resolvió desactivando reCAPTCHA en el formulario,
+del lado de HubSpot. Si se vuelve a activar, hay que añadir a la regla de
+`/academia/postular`:
+
+- `script-src`: `https://google.com`, `https://www.google.com`,
+  `https://www.gstatic.com`, `https://recaptcha.net`
+- `frame-src`: `https://www.google.com`, `https://recaptcha.net`
+- `img-src`: `https://www.gstatic.com`
+- `connect-src`: `https://www.google.com`
+- y **retirar** `style-src-elem 'self'`, porque reCAPTCHA inyecta sus propios
+  `<style>` en el padre
+
+La redirección a `meetings.hubspot.com` no necesita nada: el script padre la
+ejecuta con `window.location.assign()`, que es navegación de nivel superior y
+el CSP no restringe.
+
 Reglas del proyecto para mantener esa postura:
 
 - Las tipografías se autohospedan con `@fontsource/*` — no reintroducir `@import` a `fonts.googleapis.com` u otro CDN de fuentes, rompe `font-src 'self'`.
