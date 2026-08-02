@@ -4,6 +4,10 @@ import isotipoWhite from "../../assets/isotipo-sol-de-nodos-white.svg";
 import { Button, Card } from "../../index.js";
 import { SiteHeader, ACADEMY_URL, WHATSAPP_URL } from "../../components/layout/SiteHeader.jsx";
 import { SiteFooter } from "../../components/layout/SiteFooter.jsx";
+// La home anuncia el inicio de la cohorte, así que lee la misma fecha que la
+// academia en vez de repetirla: ya se desincronizaron una vez.
+import { COHORTE } from "../aini-academy/academia.config.js";
+import { fechaLarga } from "../aini-academy/olas.js";
 import styles from "./AiniHome.module.css";
 
 const ACTORS = [
@@ -14,7 +18,7 @@ const ACTORS = [
 ];
 
 const VERTICALS = [
-  { eyebrow: "Educación", title: "AINI Academy", desc: "Preparación para certificaciones de IA, con casos prácticos a necesidades de la región. Lanzamiento primer curso: 15 de agosto.", cta: "Postular", href: ACADEMY_URL },
+  { eyebrow: "Educación", title: "AINI Academy", desc: `Preparación para certificaciones de IA, con casos prácticos a necesidades de la región. Lanzamiento primer bootcamp: ${fechaLarga(COHORTE.inicioFecha)}.`, cta: "Postular", href: ACADEMY_URL },
   { eyebrow: "Consultoría", title: "AINI Consulting", desc: "Consultoría e implementación de IA para organizaciones públicas y privadas, desde la estratégica hasta la implantación.", cta: "Despegar" },
   { eyebrow: "Inversión", title: "AINI Venture", desc: "Inversión y aceleración de fundadores IA. Mentorías e incorporación de nuestra red de agentes IA en tu organización.", cta: "Escalar" },
 ];
