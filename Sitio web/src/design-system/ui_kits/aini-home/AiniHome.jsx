@@ -24,7 +24,7 @@ const VERTICALS = [
 ];
 
 const EVENTS = [
-  { badge: "Taller virtual", date: "Mié 22 jul · 7:00 pm (GMT-5)", title: "MCP en acción: conecta tu base de datos a Claude", desc: "Clase de prueba en vivo: construye un servidor MCP sobre datos reales y conéctalo a Claude.", href: "https://luma.com/v5xo1bts" },
+  { badge: "Clases gratuitas", date: "Todos los jueves · 8:00 p.m. (GMT-5)", title: "Master Class: IA aplicada a productos y servicios digitales", desc: "Sesión semanal y gratuita sobre inteligencia artificial aplicada a productos y servicios digitales. Cada jueves, nuestros mentores comparten casos y herramientas prácticas.", href: "https://luma.com/ainilac" },
   { badge: "Panel virtual", date: "22 jul · 7:00 pm CR · 9:00 pm CL", title: "El Gran Debate de la IA", desc: "Cuatro expertos internacionales debaten el presente y el futuro de la IA en América Latina.", href: "https://youtu.be/6Elnm0-kxF0", cta: "Ver video" },
   { badge: "Presencial · Lima", date: "Vie 24 jul · 7:00 pm", title: "Parrilla de lanzamiento AINI — Perú", desc: "Encuentro presencial en Miraflores para dar inicio a la comunidad de AINI en Perú.", href: "https://luma.com/nt2m8r1m" },
 ];
